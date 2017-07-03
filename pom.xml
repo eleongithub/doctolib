@@ -21,12 +21,14 @@
         <repository>
             <id>nexus</id>
             <name>Repository Nexus release</name>
-            <url>http://192.168.1.97:9081/nexus/content/repositories/DB-RELEASES/</url>
+            <url>http://192.168.1.97:9081/nexus/content/repositories/releases/</url>
+            <!--<url>http://192.168.1.97:9081/nexus/content/repositories/DB-RELEASES/</url>-->
         </repository>
         <snapshotRepository>
             <id>nexus</id>
             <name>Repository Nexus snapshot</name>
-            <url>http://192.168.1.97:9081/nexus/content/repositories/DB-SNAPSHOTS/</url>
+            <url>http://192.168.1.97:9081/nexus/content/repositories/snapshots/</url>
+            <!--<url>http://192.168.1.97:9081/nexus/content/repositories/DB-SNAPSHOTS/</url>-->
         </snapshotRepository>
     </distributionManagement>
 
