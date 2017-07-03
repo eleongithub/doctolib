@@ -1,0 +1,23 @@
+db-domains : domaine des classes et des DTO (apache lonbock, JPA, Hibernate)
+db-scripts : tous les scripts postgresql à execuer avec flyway
+db-dao : les DAO avec JPA/Hibernate + Spring Data (Spring Data)
+db-service : couche metier. codage des règles metiers (Spring Annotation)
+db-restfull : spring rest (Spring REST)
+
+
+Les acteurs : un medecin, une assistante de direction
+Les cas d'utilisation :
+    - un medecin/une assistante de direction se connecte avec un login et un mot de passe
+    - créer/Consulter/Modifier/Supprimer un patient
+    - créer/Consulter/Modifier/Supprimer un rendez-vous
+
+Iteration N°1 :
+    - enregistrer un compte utilisateur (admin, asistante de direction) : Nom, prenom, role, Login, MDP, Confirmation MDP
+    - se connecter avec un login + mot de passe
+    - Se déconnecter
+
+Iteration N°2 :
+    - créer/consulter/modifier/supprimer un patient
+
+Iteration N°3 :
+    - créer/Consulter/Modifier/Supprimer un rendez-vous
