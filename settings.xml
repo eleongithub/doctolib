@@ -5,8 +5,10 @@
     <servers>
         <server>
             <id>nexus</id>
-            <username>DB-USER</username>
-            <password>DB-USER</password>
+            <username>admin</username>
+            <password>admin123</password>
+            <!--<username>DB-USER</username>-->
+            <!--<password>DB-USER</password>-->
         </server>
     </servers>
 </settings>
