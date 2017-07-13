@@ -15,9 +15,6 @@ import org.springframework.http.ResponseEntity;
 public class UserControllerIntegTest extends IntegrationTest {
 
     @Autowired
-    private TestRestTemplate testRestTemplate;
-
-    @Autowired
     private UserService userService;
 
     @Test
