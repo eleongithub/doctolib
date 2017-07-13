@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * Created by ansible on 01/07/17.
  */
 
-public class UserServiceTest extends AbstractServiceTest {
+public class UserServiceTest extends ServiceTest {
 
     private static final String LOGIN = "LOGIN";
     private static final String NAME = "NAME";

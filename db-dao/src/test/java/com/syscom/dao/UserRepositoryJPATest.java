@@ -8,12 +8,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  *
- * Test du repository des utilisateurs {@link User}
+ * Test du repository JPA {@link UserRepository}
  *
  * Created by ansible on 21/06/17.
  */
 
-public class UserRepositoryTest extends AbstractRepositoryTest{
+public class UserRepositoryJPATest extends RepositoryJPATest {
 
     private static final String LOGIN = "LOGIN";
     private static final String NAME = "NAME";

@@ -12,5 +12,5 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @ContextConfiguration(classes = {RepositoryTestConfiguration.class})
-public abstract class AbstractRepositoryTest {
+public class RepositoryJPATest {
 }
