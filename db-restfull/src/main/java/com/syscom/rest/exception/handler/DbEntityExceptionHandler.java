@@ -16,7 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class DbEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {BusinessException.class})
-    protected ResponseEntity<Object> handleBusinessException(RuntimeException ex, WebRequest request) {
+    protected ResponseEntity<Object> handleBusinessException(BusinessException ex, WebRequest request) {
         return handleExceptionInternal(ex, null, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
