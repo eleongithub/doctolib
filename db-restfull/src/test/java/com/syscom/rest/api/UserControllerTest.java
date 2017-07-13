@@ -1,7 +1,6 @@
 package com.syscom.rest.api;
 
 import com.syscom.domains.dto.UserDTO;
-import com.syscom.rest.ControllerApiTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +26,14 @@ public class UserControllerTest extends ControllerApiTest {
     }
 
     @Test
+    public void whenCreateNullUserThenThrowIllegalArgumentException() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/user")
+                .content(json(null))
+                .contentType(contentType))
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
+    }
+
+    @Test
     public void whenCreateEmptyUserThenThrowBusinessException() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/user")
                 .content(json(new UserDTO()))
@@ -35,7 +42,7 @@ public class UserControllerTest extends ControllerApiTest {
     }
 
     @Test
-    public void createUser() throws Exception {
+    public void whenCreateValidUserThenReturnSuccess() throws Exception {
         UserDTO userDTO = UserDTO.builder()
                                  .name(NAME)
                                  .firstName(FIRST_NAME)

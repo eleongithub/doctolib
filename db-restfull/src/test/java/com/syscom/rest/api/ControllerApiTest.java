@@ -1,6 +1,6 @@
-package com.syscom.rest;
+package com.syscom.rest.api;
 
-import com.syscom.rest.api.BaseController;
+import com.syscom.rest.Application;
 import com.syscom.rest.exception.handler.DbEntityExceptionHandler;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
