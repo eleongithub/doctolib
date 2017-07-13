@@ -10,5 +10,5 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {ConfigIntegration.class}) //webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-public class IntegrationTest {
+public abstract class IntegrationTest {
 }

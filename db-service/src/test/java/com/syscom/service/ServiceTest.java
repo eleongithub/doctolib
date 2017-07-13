@@ -12,5 +12,5 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {ServiceTestConfiguration.class})
 @DataJpaTest
-public class ServiceTest {
+public abstract class ServiceTest {
 }
