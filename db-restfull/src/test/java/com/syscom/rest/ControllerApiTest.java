@@ -25,7 +25,7 @@ import java.util.Arrays;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 @WebAppConfiguration
-public class ControllerApiTest {
+public abstract class ControllerApiTest {
 
     protected MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
             MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
