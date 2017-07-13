@@ -16,19 +16,19 @@
         <module>db-restfull</module>
     </modules>
 
-    <!-- Paramètres Nexus -->
+    <!--Paramètre du repository Nexus -->
     <distributionManagement>
         <repository>
             <id>nexus</id>
             <name>Repository Nexus release</name>
             <url>http://192.168.1.97:9081/nexus/content/repositories/releases/</url>
-            <!--<url>http://192.168.1.97:9081/nexus/content/repositories/DB-RELEASES/</url>-->
+            <!--TODO : Repo par projet <url>http://ipAdress:port/nexus/content/repositories/DB-RELEASES/</url>-->
         </repository>
         <snapshotRepository>
             <id>nexus</id>
             <name>Repository Nexus snapshot</name>
             <url>http://192.168.1.97:9081/nexus/content/repositories/snapshots/</url>
-            <!--<url>http://192.168.1.97:9081/nexus/content/repositories/DB-SNAPSHOTS/</url>-->
+            <!-- TODO : Repo par projet <url>http://ipAdress:port/nexus/content/repositories/DB-SNAPSHOTS/</url>-->
         </snapshotRepository>
     </distributionManagement>
 
@@ -69,6 +69,8 @@
             <version>${aspectj.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- Dépendance Jacoco -->
         <dependency>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>

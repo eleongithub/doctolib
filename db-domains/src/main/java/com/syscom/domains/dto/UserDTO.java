@@ -3,7 +3,7 @@ package com.syscom.domains.dto;
 import lombok.*;
 
 /**
- * Clase DTO représentant les données d'un utilisateurs.
+ * Clase DTO représentant les données d'un utilisateur.
  *
  * Created by ansible on 01/07/17.
  */

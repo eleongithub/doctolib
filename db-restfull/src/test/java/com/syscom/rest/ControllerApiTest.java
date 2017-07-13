@@ -1,6 +1,7 @@
 package com.syscom.rest;
 
-import org.junit.Before;
+import com.syscom.rest.api.BaseController;
+import com.syscom.rest.exception.handler.DbEntityExceptionHandler;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +25,7 @@ import java.util.Arrays;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 @WebAppConfiguration
-public class AbstractAPITest {
+public class ControllerApiTest {
 
     protected MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
             MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
@@ -45,9 +46,11 @@ public class AbstractAPITest {
                 .orElse(null);
     }
 
-    @Before
-    public void setup() throws Exception {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    public void initMockMvc(BaseController controller) throws Exception {
+        this.mockMvc = MockMvcBuilders
+                                      .standaloneSetup(controller).setControllerAdvice(new DbEntityExceptionHandler())
+                                      .build();
+
     }
 
     protected String json(Object object) throws IOException {
@@ -55,6 +58,4 @@ public class AbstractAPITest {
         this.mappingJackson2HttpMessageConverter.write(object, MediaType.APPLICATION_JSON, mockHttpOutputMessage);
         return mockHttpOutputMessage.getBodyAsString();
     }
-
-
 }

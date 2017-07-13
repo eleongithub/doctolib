@@ -10,12 +10,10 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 /**
- * Handlers for exceptions
- *
- * Created by ansible on 02/07/17.
+ * Created by ansible on 13/07/17.
  */
 @ControllerAdvice
-public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+public class DbEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {BusinessException.class})
     protected ResponseEntity<Object> handleBusinessException(RuntimeException ex, WebRequest request) {
@@ -32,4 +30,3 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return handleExceptionInternal(ex, null, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 }
-

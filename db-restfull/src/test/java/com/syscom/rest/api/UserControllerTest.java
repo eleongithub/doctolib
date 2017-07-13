@@ -1,28 +1,37 @@
 package com.syscom.rest.api;
 
 import com.syscom.domains.dto.UserDTO;
-import com.syscom.rest.AbstractAPITest;
-import com.syscom.service.exceptions.BusinessException;
+import com.syscom.rest.ControllerApiTest;
+import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 /**
  * Created by ansible on 03/07/17.
  */
-public class UserControllerTest extends AbstractAPITest{
+public class UserControllerTest extends ControllerApiTest {
 
     private static final String LOGIN = "LOGIN";
     private static final String NAME = "NAME";
     private static final String FIRST_NAME = "FIRST_NAME";
     private static final String PASSWORD = "PASSWORD";
 
-    @Test(expected = BusinessException.class)
+    @Autowired
+    private UserController userController;
+
+    @Before
+    public void setup() throws Exception {
+        super.initMockMvc(userController);
+    }
+
+    @Test
     public void whenCreateEmptyUserThenThrowBusinessException() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/user")
                 .content(json(new UserDTO()))
                 .contentType(contentType))
-                .andExpect(MockMvcResultMatchers.status().is5xxServerError());
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
     }
 
     @Test
