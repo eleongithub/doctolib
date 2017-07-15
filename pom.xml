@@ -5,7 +5,7 @@
     <groupId>com.syscom</groupId>
     <artifactId>doctolib</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <modules>
         <module>db-scripts</module>
         <module>db-domains</module>
@@ -25,7 +25,7 @@
         <connection>scm:git:git@github.com:eleongithub/doctolib.git</connection>
         <url>scm:git:git@github.com:eleongithub/doctolib.git</url>
         <developerConnection>scm:git:git@github.com:eleongithub/doctolib.git</developerConnection>
-      <tag>doctolib-1.0.0</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <!--Paramètre du repository Nexus -->
