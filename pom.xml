@@ -17,10 +17,16 @@
     </modules>
 
     <!-- SCM for release process -->
+    <!--<scm>-->
+        <!--<connection>scm:git:https://github.com/eleongithub/doctolib.git</connection>-->
+        <!--<url>http://github.com/eleongithub/doctolib</url>-->
+        <!--<developerConnection>scm:git:https://github.com/eleongithub/doctolib.git</developerConnection>-->
+    <!--</scm>-->
+
     <scm>
-        <connection>scm:git:https://github.com/eleongithub/doctolib.git</connection>
-        <url>http://github.com/eleongithub/doctolib</url>
-        <developerConnection>scm:git:https://github.com/eleongithub/doctolib.git</developerConnection>
+        <connection>scm:git:git@github.com:eleongithub/doctolib.git</connection>
+        <url>scm:git:git@github.com:eleongithub/doctolib.git</url>
+        <developerConnection>scm:git:git@github.com:eleongithub/doctolib.git</developerConnection>
     </scm>
 
     <!--Paramètre du repository Nexus -->
