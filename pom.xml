@@ -32,13 +32,13 @@
     <!--Paramètre du repository Nexus -->
     <distributionManagement>
         <repository>
-            <id>nexus</id>
+            <id>nexus-releases</id>
             <name>Repository Nexus release</name>
             <url>http://192.168.1.97:9081/nexus/content/repositories/releases/</url>
             <!--TODO : Repo par projet <url>http://ipAdress:port/nexus/content/repositories/DB-RELEASES/</url>-->
         </repository>
         <snapshotRepository>
-            <id>nexus</id>
+            <id>nexus-snapshots</id>
             <name>Repository Nexus snapshot</name>
             <url>http://192.168.1.97:9081/nexus/content/repositories/snapshots/</url>
             <!-- TODO : Repo par projet <url>http://ipAdress:port/nexus/content/repositories/DB-SNAPSHOTS/</url>-->
