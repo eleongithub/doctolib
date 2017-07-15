@@ -1,11 +1,8 @@
 package com.syscom.rest.integration;
 
 import com.syscom.domains.dto.UserDTO;
-import com.syscom.service.UserService;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -13,9 +10,6 @@ import org.springframework.http.ResponseEntity;
  * Created by ansible on 13/07/17.
  */
 public class UserControllerIntegTest extends IntegrationTest {
-
-    @Autowired
-    private UserService userService;
 
     @Test
     public void createUser() throws Exception{
