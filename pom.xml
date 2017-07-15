@@ -24,9 +24,9 @@
     <!--</scm>-->
 
     <scm>
-        <connection>scm:git:git@github.com:eleongithub/doctolib.git</connection>
-        <url>scm:git:git@github.com:eleongithub/doctolib.git</url>
-        <developerConnection>scm:git:git@github.com:eleongithub/doctolib.git</developerConnection>
+        <connection>scm:git:git@github.com:eleongithub:si9382v/doctolib.git</connection>
+        <url>scm:git:git@github.com:eleongithub:si9382v/doctolib.git</url>
+        <developerConnection>scm:git:git@github.com:eleongithub:si9382v/doctolib.git</developerConnection>
     </scm>
 
     <!--Paramètre du repository Nexus -->
