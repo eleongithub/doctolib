@@ -1,5 +1,6 @@
 package com.syscom.domains.dto;
 
+import io.swagger.annotations.ApiModel;
 import lombok.*;
 
 /**
@@ -14,6 +15,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {})
+@ApiModel(value="UserDTO", description="User model")
 public class UserDTO extends BaseDTO {
 
 

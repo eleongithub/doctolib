@@ -22,6 +22,8 @@ target/
 # Gradle:
 .idea/gradle.xml
 .idea/libraries
+logs/
+logs/*.log
 
 # CMake
 cmake-build-debug/

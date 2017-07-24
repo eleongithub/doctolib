@@ -13,9 +13,8 @@ import com.syscom.service.exceptions.BusinessException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -35,8 +34,8 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private MessageSource messageSource;
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+//	@Autowired
+//	private PasswordEncoder passwordEncoder;
 
 	/**
 	 * {@inheritDoc}
@@ -62,7 +61,8 @@ public class UserServiceImpl implements UserService {
 						.login(userDTO.getLogin())
 						.firstName(userDTO.getFirstName())
 						.name(userDTO.getName())
-						.password(passwordEncoder.encode(userDTO.getPassword()))
+//						.password(passwordEncoder.encode(userDTO.getPassword()))
+						.password(userDTO.getPassword())
 						.build();
 
 //		Inserer l'utilisateur en base de données

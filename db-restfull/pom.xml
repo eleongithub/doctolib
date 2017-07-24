@@ -45,13 +45,6 @@
             <version>${flyway.version}</version>
         </dependency>
 
-        <!-- Configuration de la documentation de l'API avec Swagger -->
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>${springfox-swagger2.version}</version>
-        </dependency>
-
         <!-- Interface UI de l'API avec Swagger -->
         <dependency>
             <groupId>io.springfox</groupId>

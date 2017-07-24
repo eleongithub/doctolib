@@ -21,18 +21,26 @@ import java.util.Date;
 @EqualsAndHashCode(exclude = {})
 public class BaseBean implements Serializable {
 
-	@Column(name = "CRE_DATE")
+	@Column(name = "CREATE_DATE")
 	protected Date createDate;
 
 	@Column(name = "UPDATE_DATE")
 	protected Date updateDate;
 
+	/**
+	 * Avant un persist en BDD, mise à jour des dates techniques s'ils étaient nulles
+	 *
+	 */
 	@PrePersist
 	void  prePersist(){
 		this.createDate = (this.createDate == null ? new Date() : this.createDate);
 		this.updateDate = (this.updateDate == null ? new Date() : this.updateDate);
 	}
 
+	/**
+	 * Mise à jour de la date de modification avant une opération de modification
+	 *
+	 */
 	@PreUpdate
 	void preUpdate(){
 		this.updateDate = new Date();

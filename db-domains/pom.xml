@@ -20,6 +20,13 @@
             <artifactId>lombok</artifactId>
             <version>${apache-lombok.version}</version>
         </dependency>
+
+        <!-- Configuration de la documentation de l'API avec Swagger -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${springfox-swagger2.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

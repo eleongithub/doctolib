@@ -1,5 +1,6 @@
 package com.syscom.domains.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -16,7 +17,9 @@ import java.util.Date;
 @EqualsAndHashCode(exclude = {})
 public class BaseDTO implements Serializable {
 
+    @ApiModelProperty(hidden = true)
     protected Date createDate;
 
+    @ApiModelProperty(hidden = true)
     protected Date updateDate;
 }
