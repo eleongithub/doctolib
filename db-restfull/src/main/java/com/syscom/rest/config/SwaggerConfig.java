@@ -23,9 +23,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig extends WebMvcConfigurerAdapter{
 
+    private static final String PACKAGE = "com.syscom.rest";
     /**
      * Configuration de l'API des utilisateurs. API non sécurisé.
-     * TODO - Indiquer ici uniquement l'API signin, pour s'enregistrer
      * @return
      */
     @Bean
@@ -33,7 +33,7 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter{
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("Signin user API")
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.syscom.rest"))
+                .apis(RequestHandlerSelectors.basePackage(PACKAGE))
                 .paths(PathSelectors.ant("/api/user/**"))
                 .build()
                 .apiInfo(apiInfo());
@@ -49,7 +49,7 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter{
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("Login API")
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.syscom.rest"))
+                .apis(RequestHandlerSelectors.basePackage(PACKAGE))
                 .paths(PathSelectors.ant("/api/login/**"))
                 .build()
                 .apiInfo(apiInfo());
@@ -66,7 +66,7 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter{
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("Secured API")
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.syscom.rest"))
+                .apis(RequestHandlerSelectors.basePackage(PACKAGE))
                 .paths(PathSelectors.ant("/api/secured/**"))
                 .build()
                 .apiInfo(apiInfo());

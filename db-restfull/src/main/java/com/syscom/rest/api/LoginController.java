@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by Eric Legba on 30/07/17.
  */
 
-@Api(value = UserController.PATH, description = "API pour l'authentification des utilisateurs")
+@Api(value = UserController.PATH)
 @RestController
 @RequestMapping(LoginController.PATH)
 public class LoginController implements BaseController {
@@ -35,7 +35,7 @@ public class LoginController implements BaseController {
      * @throws BusinessException
      */
     @RequestMapping(method = RequestMethod.POST)
-    @ApiOperation(value = "Authentification d'un utilisateur", notes = "Authentification d'un utilisateur")
+    @ApiOperation(value = "API pour l'authentification des utilisateurs", notes = "Authentification d'un utilisateur")
     @ApiResponses(value = { @ApiResponse(code = 400, message = "Bad Request param error")
     })
     public String login(@ApiParam(value = "authorization(Login:MDP(Base 64))", required = true)@RequestBody String authotization) throws BusinessException {

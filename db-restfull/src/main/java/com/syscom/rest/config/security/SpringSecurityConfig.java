@@ -34,16 +34,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SpringSecurityConfig {
 
-//    @Autowired
-//    private UserRepository userRepository;
-//
-//
-//    @Bean
-//    @Override
-//    public AuthenticationManager authenticationManager() throws Exception {
-//        return super.authenticationManagerBean();
-//    }
-//
 
     /**
      * Configuration de sécurité de l'API Rest secured dont l'acces est securisé par Token
@@ -69,12 +59,13 @@ public class SpringSecurityConfig {
         }
 
         @Bean
+        @Override
         public UserDetailsService userDetailsService() {
             return new UserDetailsService() {
                 @Override
                 public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
                     User user = userRepository.findByLogin(username);
-                    if(user != null) {
+                    if (user != null) {
                         return new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(), AuthorityUtils.createAuthorityList("USER"));
                     } else {
                         throw new UsernameNotFoundException("could not find the user '" + username + "'");
@@ -132,53 +123,4 @@ public class SpringSecurityConfig {
         }
 
     }
-
-
-
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .csrf().disable()
-//                .authorizeRequests()
-//                .antMatchers("/**").permitAll();
-
-//        http
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//            .and()
-//                .csrf().disable()
-//                .authorizeRequests()
-//                .antMatchers("/api/user").permitAll()
-//                .antMatchers("/api/login").permitAll()
-//                .antMatchers("/api/secured/**").authenticated()
-//            .and()
-//                .addFilterBefore(new StatelessAuthenticationFilter(),
-//                        UsernamePasswordAuthenticationFilter.class);
-
-    }
-//
-//
-//    @Bean
-//    public DaoAuthenticationProvider daoAuthenticationProvider() {
-//        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-//        authenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());
-//        authenticationProvider.setUserDetailsService(userDetailsService());
-//        return authenticationProvider;
-//    }
-//
-
-//
-//
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.authenticationProvider(daoAuthenticationProvider());
-//        auth.userDetailsService(userDetailsService());
-//    }
-//
-//    @Override
-//    public void configure(WebSecurity web) throws Exception {
-//        web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/resources/**");
-//    }
-
-//}
+}

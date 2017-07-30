@@ -20,7 +20,7 @@ import java.nio.file.AccessDeniedException;
 @ControllerAdvice
 public class DbEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -52,6 +52,6 @@ public class DbEntityExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     private void logError(Exception exception){
-        LOGGER.error(exception.getMessage(), exception);
+        logger.error(exception.getMessage(), exception);
     }
 }
