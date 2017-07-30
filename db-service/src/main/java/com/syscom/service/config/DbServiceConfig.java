@@ -4,11 +4,12 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-//import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
- * Configuration liée à la couche métier de l'application
+ * Configuration Spring pour la couche métier de l'application
+ *
  * @author el1638en
  * @since 14/06/17 14:32
  */
@@ -29,12 +30,12 @@ public class DbServiceConfig {
 	}
 
 	/**
-	 * Bean Spring pour le chiffrement des mots de passe
+	 * Bean Spring pour le chiffrement des mots de passe des utilisateurs
 	 *
 	 * @return
      */
-//	@Bean
-//	public PasswordEncoder passwordEncoder(){
-//		return  new BCryptPasswordEncoder();
-//	}
+	@Bean
+	public PasswordEncoder passwordEncoder(){
+		return  new BCryptPasswordEncoder();
+	}
 }

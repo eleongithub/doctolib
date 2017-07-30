@@ -20,7 +20,7 @@ import java.nio.charset.Charset;
 import java.util.Arrays;
 
 /**
- * Created by ansible on 03/07/17.
+ * Created by Eric Legba on 03/07/17.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)

@@ -15,7 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.nio.file.AccessDeniedException;
 
 /**
- * Created by ansible on 13/07/17.
+ * Created by Eric Legba on 13/07/17.
  */
 @ControllerAdvice
 public class DbEntityExceptionHandler extends ResponseEntityExceptionHandler {

@@ -1,27 +1,19 @@
 package com.syscom.dao;
 
 import com.syscom.domains.models.User;
+import com.syscom.domains.models.referentiels.Role;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  *
  * Test du repository JPA {@link UserRepository}
  *
- * Created by ansible on 21/06/17.
+ * Created by Eric Legba on 21/06/17.
  */
 
 public class UserRepositoryJPATest extends RepositoryJPATest {
-
-    private static final String LOGIN = "LOGIN";
-    private static final String NAME = "NAME";
-    private static final String FIRST_NAME = "FIRST_NAME";
-    private static final String PASSWORD = "PASSWORD";
-
-    @Autowired
-    private TestEntityManager entityManager;
 
     @Autowired
     private UserRepository userRepository;
@@ -30,22 +22,18 @@ public class UserRepositoryJPATest extends RepositoryJPATest {
     @Test
     public void whenFindByLoginThenReturnUser() {
         // given
-        User user = new User();
-        user.setName(NAME);
-        user.setLogin(LOGIN);
-        user.setFirstName(FIRST_NAME);
-        user.setPassword(PASSWORD);
-        user  = entityManager.persistAndFlush(user);
+        Role role = testEntityManager.persistAndFlush(getDefaultRole());
+        User user  = testEntityManager.persistAndFlush(getUser(role));
 
         // when
-        User foundUser = userRepository.findByLogin(LOGIN);
+        User foundUser = userRepository.findByLogin(USER_LOGIN);
 
         // then
         assertThat(foundUser).isNotNull();
-        assertThat(foundUser.getName()).isEqualTo(NAME);
-        assertThat(foundUser.getFirstName()).isEqualTo(FIRST_NAME);
-        assertThat(foundUser.getLogin()).isEqualTo(LOGIN);
-        assertThat(foundUser.getPassword()).isEqualTo(PASSWORD);
+        assertThat(foundUser.getName()).isEqualTo(USER_NAME);
+        assertThat(foundUser.getFirstName()).isEqualTo(USER_FIRST_NAME);
+        assertThat(foundUser.getLogin()).isEqualTo(USER_LOGIN);
+        assertThat(foundUser.getPassword()).isEqualTo(USER_PASSWORD);
         assertThat(foundUser.getId()).isEqualTo(user.getId());
         assertThat(foundUser.getCreateDate()).isNotNull();
         assertThat(foundUser.getUpdateDate()).isNotNull();
@@ -56,15 +44,11 @@ public class UserRepositoryJPATest extends RepositoryJPATest {
     @Test
     public void whenExistsByLoginThenReturnBoolean() {
         // given
-        User user = new User();
-        user.setName(NAME);
-        user.setLogin(LOGIN);
-        user.setFirstName(FIRST_NAME);
-        user.setPassword(PASSWORD);
-        entityManager.persistAndFlush(user);
+        Role role = testEntityManager.persistAndFlush(getDefaultRole());
+        testEntityManager.persistAndFlush(getUser(role));
 
         // when
-        boolean checkExistUserByLogin = userRepository.existsByLogin(LOGIN);
+        boolean checkExistUserByLogin = userRepository.existsByLogin(USER_LOGIN);
 
         // then
         assertThat(checkExistUserByLogin).isTrue();

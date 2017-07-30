@@ -1,7 +1,7 @@
 package com.syscom.rest.utils;
 
 /**
- * Created by ansible on 02/07/17.
+ * Created by Eric Legba on 02/07/17.
  */
 public class RestPreconditions {
 

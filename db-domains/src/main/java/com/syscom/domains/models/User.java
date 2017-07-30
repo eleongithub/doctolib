@@ -1,11 +1,14 @@
 package com.syscom.domains.models;
 
 
+import com.syscom.domains.models.referentiels.Role;
 import lombok.*;
 
 import javax.persistence.*;
 
 /**
+ * Classe représentant les données d'un utilisateur de l'application
+ *
  * @author el1638en
  * @since 08/06/17 17:42
  */
@@ -36,5 +39,10 @@ public class User extends BaseBean {
 
 	@Column(name = "U_PASSWORD")
 	private String password;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="U_ROLE_ID", nullable = false)
+	private Role role;
+
 
 }

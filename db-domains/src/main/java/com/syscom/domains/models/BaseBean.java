@@ -1,15 +1,15 @@
 package com.syscom.domains.models;
 
+import com.syscom.domains.converters.LocalDateTimeConverter;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
+import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
+
+import static java.time.LocalDateTime.now;
 
 /**
  * @author el1638en
@@ -22,10 +22,12 @@ import java.util.Date;
 public class BaseBean implements Serializable {
 
 	@Column(name = "CREATE_DATE")
-	protected Date createDate;
+	@Convert(converter = LocalDateTimeConverter.class)
+	protected LocalDateTime createDate;
 
 	@Column(name = "UPDATE_DATE")
-	protected Date updateDate;
+	@Convert(converter = LocalDateTimeConverter.class)
+	protected LocalDateTime updateDate;
 
 	/**
 	 * Avant un persist en BDD, mise à jour des dates techniques s'ils étaient nulles
@@ -33,8 +35,8 @@ public class BaseBean implements Serializable {
 	 */
 	@PrePersist
 	void  prePersist(){
-		this.createDate = (this.createDate == null ? new Date() : this.createDate);
-		this.updateDate = (this.updateDate == null ? new Date() : this.updateDate);
+		this.createDate = (this.createDate == null ? now()  : this.createDate);
+		this.updateDate = (this.updateDate == null ? now() : this.updateDate);
 	}
 
 	/**
@@ -43,7 +45,7 @@ public class BaseBean implements Serializable {
 	 */
 	@PreUpdate
 	void preUpdate(){
-		this.updateDate = new Date();
+		this.updateDate = now();
 	}
 
 }
