@@ -1,37 +1,35 @@
 package com.syscom.domains.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
 import java.io.Serializable;
 
 /**
- * Clase DTO représentant les données d'un utilisateur {@link com.syscom.domains.models.User}.
+ * Classe DTO des données des patients.
  *
- * Created by Eric Legba on 01/07/17.
+ * Created by Eric Legba on 01/08/17.
  */
 
 @Data
 @Builder
-@ToString(exclude = {"password"})
+@ToString(exclude = {})
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {})
-public class UserDTO implements Serializable {
-
+public class PatientDTO implements Serializable {
 
     private String name;
 
     private String firstName;
 
-    private String login;
+    private String phone;
 
-    private String password;
+    private String mail;
 
-    private String role;
+    private String address;
+
 }

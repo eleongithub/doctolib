@@ -3,7 +3,7 @@ package com.syscom.service.exceptions;
 /**
  * Classe d'exception pour gérer les erreurs metiers
  *
- * @author el1638en
+ * @author Eric Legba
  * @since 14/06/17 14:25
  */
 public class BusinessException extends Exception {

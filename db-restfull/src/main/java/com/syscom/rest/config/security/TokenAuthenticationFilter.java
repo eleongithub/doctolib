@@ -1,8 +1,5 @@
 package com.syscom.rest.config.security;
 
-import com.syscom.domains.models.Token;
-import com.syscom.service.TokenService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -11,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedCredentialsNotFoundException;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -19,50 +17,41 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Filter pour authentifier les requêtes des clients avec un jeton  (token) dans les en-têtes HTTP
+ * Filter pour récupérer le jeton d'authentification et authentifier l'utilisateur.
  *
- * Created by Eric Legba on 26/07/17.
+ * Created by Eric Legba on 02/08/17.
  */
-//@Component
-public class StatelessAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-    @Autowired
-    private TokenService tokenService;
+    public static final String AUTH_HEADER_NAME = "Authorization";
 
-    private static final String AUTH_HEADER_NAME = "AUTH-TOKEN";
 
-    public StatelessAuthenticationFilter() {
+    public TokenAuthenticationFilter() {
 //        Indiquer ici le pattern des URLs auxquels doivent s'appliquer le filter
         super("/api/secured/**");
     }
 
-    @Override
-    protected boolean requiresAuthentication(HttpServletRequest request, HttpServletResponse response) {
-        return true;
+    protected TokenAuthenticationFilter(String defaultFilterProcessesUrl) {
+        super(defaultFilterProcessesUrl);
+        super.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher(
+                defaultFilterProcessesUrl));
     }
 
-
-    protected StatelessAuthenticationFilter(String defaultFilterProcessesUrl) {
-        super(defaultFilterProcessesUrl);
-        super.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher(defaultFilterProcessesUrl));
-
+    protected TokenAuthenticationFilter(RequestMatcher requiresAuthenticationRequestMatcher) {
+        super(requiresAuthenticationRequestMatcher);
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-        String tokenValue = request.getHeader(AUTH_HEADER_NAME);
-        if (tokenValue == null) {
-            throw new PreAuthenticatedCredentialsNotFoundException("No token found in request headers. Unauthorized access.");
-        }
-
-        Token token = tokenService.findValidTokenByValue(tokenValue);
-        if (token == null) {
+        String accessToken = request.getHeader(AUTH_HEADER_NAME);
+        if (accessToken == null) {
             throw new PreAuthenticatedCredentialsNotFoundException(
-                    "Unvalid token. Unauthorized access.");
+                    "No token found in request headers. Unauthorized access.");
         }
 
-        JwtAuthenticationToken authRequest = new JwtAuthenticationToken(tokenValue);
+        JwtAuthenticationToken authRequest = new JwtAuthenticationToken(accessToken);
 
+//        Appel de l'authentication provider pour authentifier l'utilisateur
         return getAuthenticationManager().authenticate(authRequest);
     }
 
@@ -85,4 +74,5 @@ public class StatelessAuthenticationFilter extends AbstractAuthenticationProcess
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
     }
+
 }

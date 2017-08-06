@@ -45,7 +45,6 @@ public class TokenServiceImpl implements TokenService{
      * {@inheritDoc}
      */
     @Override
-    @Transactional(readOnly = false)
     public TokenDTO create(TokenDTO tokenDTO) throws BusinessException {
         LocalDateTime currentTime = LocalDateTime.now();
         tokenRepository.deleteExpiredToken(currentTime);
@@ -60,7 +59,7 @@ public class TokenServiceImpl implements TokenService{
                            .value(value)
                            .user(user)
                            .build();
-        token = tokenRepository.save(token);
+        tokenRepository.save(token);
         return convertFrom(token, user);
     }
 

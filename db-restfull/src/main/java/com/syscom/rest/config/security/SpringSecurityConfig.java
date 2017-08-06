@@ -1,8 +1,5 @@
 package com.syscom.rest.config.security;
 
-import com.syscom.dao.UserRepository;
-import com.syscom.domains.models.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -13,12 +10,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 /**
  * Classe de configuration de Spring Security.
@@ -42,36 +38,21 @@ public class SpringSecurityConfig {
     @Order(1)
     public static class SecuredApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
-        @Autowired
-        private UserRepository userRepository;
+        @Bean
+        public TokenAuthenticationProvider tokenAuthenticationProvider() {
+            return new TokenAuthenticationProvider();
+        }
 
         @Bean
-        public DaoAuthenticationProvider daoAuthenticationProvider() {
-            DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-            authenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());
-            authenticationProvider.setUserDetailsService(userDetailsService());
-            return authenticationProvider;
+        public TokenAuthenticationFilter tokenAuthenticationFilter() throws Exception {
+            TokenAuthenticationFilter tokenAuthenticationFilter = new TokenAuthenticationFilter();
+            tokenAuthenticationFilter.setAuthenticationManager(super.authenticationManager());
+            return tokenAuthenticationFilter;
         }
 
         @Override
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-            auth.authenticationProvider(daoAuthenticationProvider());
-        }
-
-        @Bean
-        @Override
-        public UserDetailsService userDetailsService() {
-            return new UserDetailsService() {
-                @Override
-                public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                    User user = userRepository.findByLogin(username);
-                    if (user != null) {
-                        return new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(), AuthorityUtils.createAuthorityList("USER"));
-                    } else {
-                        throw new UsernameNotFoundException("could not find the user '" + username + "'");
-                    }
-                }
-            };
+            auth.authenticationProvider(tokenAuthenticationProvider());
         }
 
         @Override
@@ -80,7 +61,7 @@ public class SpringSecurityConfig {
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                     .csrf().disable()
-                    .addFilterBefore(new StatelessAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                    .addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                     .antMatcher("/api/secured/**")
                     .authorizeRequests()
                     .anyRequest().authenticated();
@@ -89,7 +70,7 @@ public class SpringSecurityConfig {
     }
 
     /**
-     * Configuration de sécurité de l'API des utilisateurs pour s'enregistrer. API ouvert intégralement.
+     * Configuration de sécurité de l'API des utilisateurs pour s'enregistrer. API ouvert intégralement..
      */
     @Configuration
     @Order(2)
@@ -112,14 +93,29 @@ public class SpringSecurityConfig {
     @Configuration
     @Order(3)
     public static class LoginApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
+
+        @Bean
+        public UserDetailsService userDetailsService(){
+            return new DbUserDetailsService();
+        }
+
+        @Bean
+        public DaoAuthenticationProvider daoAuthenticationProvider() {
+            DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+            authenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());
+            authenticationProvider.setUserDetailsService(userDetailsService());
+            return authenticationProvider;
+        }
+
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.csrf().disable()
-                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                    .and()
-                    .antMatcher("/login/**")
-                    .authorizeRequests().anyRequest()
-                    .anonymous();
+            http
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().csrf().disable()
+                .addFilterAt(new BasicAuthenticationFilter(super.authenticationManager(), new BasicAuthenticationEntryPoint()), UsernamePasswordAuthenticationFilter.class)
+                .anonymous().disable()
+                .authorizeRequests()
+                .antMatchers("/api/login").permitAll();
         }
 
     }

@@ -12,7 +12,6 @@ CREATE TABLE T_TOKEN(
 );
 
 -- Commentaires sur la table des tokens et ses colonnes
--- Commentaires sur la table des fonctionnalités et ses colonnes
 COMMENT ON TABLE T_TOKEN IS 'Table des jetons d''authentification';
 COMMENT ON COLUMN T_TOKEN.T_ID IS 'ID du token';
 COMMENT ON COLUMN T_TOKEN.T_VALUE IS 'Valeur (GUID) du token';

@@ -14,32 +14,28 @@
         <module>db-restfull</module>
     </modules>
 
-    <!-- SCM for release process -->
-    <!--<scm>-->
-        <!--<connection>scm:git:https://github.com/eleongithub/doctolib.git</connection>-->
-        <!--<url>http://github.com/eleongithub/doctolib</url>-->
-        <!--<developerConnection>scm:git:https://github.com/eleongithub/doctolib.git</developerConnection>-->
-    <!--</scm>-->
-
+    <!-- SCM for release process
+        Ressource utilisée : http://www.baeldung.com/maven-release-nexus
+    -->
     <scm>
         <connection>scm:git:git@github.com:eleongithub/doctolib.git</connection>
         <url>scm:git:git@github.com:eleongithub/doctolib.git</url>
         <developerConnection>scm:git:git@github.com:eleongithub/doctolib.git</developerConnection>
       <tag>HEAD</tag>
-  </scm>
+    </scm>
 
     <!--Paramètre du repository Nexus -->
     <distributionManagement>
         <repository>
             <id>nexus-releases</id>
             <name>Repository Nexus release</name>
-            <url>http://192.168.1.97:9081/nexus/content/repositories/releases/</url>
+            <url>http://192.168.43.62:9081/nexus/content/repositories/releases/</url>
             <!--TODO : Repo par projet <url>http://ipAdress:port/nexus/content/repositories/DB-RELEASES/</url>-->
         </repository>
         <snapshotRepository>
             <id>nexus-snapshots</id>
             <name>Repository Nexus snapshot</name>
-            <url>http://192.168.1.97:9081/nexus/content/repositories/snapshots/</url>
+            <url>http://192.168.43.62:9081/nexus/content/repositories/snapshots/</url>
             <!-- TODO : Repo par projet <url>http://ipAdress:port/nexus/content/repositories/DB-SNAPSHOTS/</url>-->
         </snapshotRepository>
     </distributionManagement>
@@ -59,8 +55,96 @@
         <jacoco.version>0.7.7.201606060606</jacoco.version>
         <springfox-swagger2.version>2.6.1</springfox-swagger2.version>
         <springfox-swagger-ui.version>2.6.1</springfox-swagger-ui.version>
+        <jjwt.version>0.7.0</jjwt.version>
+        <spring-security-jwt.version>1.0.4.RELEASE</spring-security-jwt.version>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <!-- Spring boot avec JPA -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-jpa</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <!-- Apache Lombok (Très utile pour générer les getter/setter, les builder, etc... -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${apache-lombok.version}</version>
+            </dependency>
+
+            <!-- Configuration de la documentation de l'API avec Swagger -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${springfox-swagger2.version}</version>
+            </dependency>
+
+            <!-- Librairie Apache pour manipuler facilement des chaines de caractères (StringUtils), des nombres, etc... -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${apache-common-lang.version}</version>
+            </dependency>
+
+            <!-- Spring boot avec Spring Security -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-security</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <!-- Jar PostgreSQl pour la connexion à la base de données -->
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.version}</version>
+            </dependency>
+
+            <!-- Versionning de Script SQL avec Flyway -->
+            <dependency>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-core</artifactId>
+                <version>${flyway.version}</version>
+            </dependency>
+
+            <!-- Interface UI de l'API avec Swagger -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${springfox-swagger-ui.version}</version>
+            </dependency>
+
+            <!-- Configuration de la documentation de l'API avec Swagger -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${springfox-swagger2.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-jwt -->
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-jwt</artifactId>
+                <version>${spring-security-jwt.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <!-- Dépendance Spring Boot pour les tests -->
@@ -123,27 +207,4 @@
         </plugins>
     </build>
 
-    <!--<profiles>-->
-        <!--<profile>-->
-            <!--<id>releases</id>-->
-            <!--<build>-->
-                <!--<plugins>-->
-                    <!--<plugin>-->
-                        <!--<groupId>org.sonatype.plugins</groupId>-->
-                        <!--<artifactId>nexus-staging-maven-plugin</artifactId>-->
-                        <!--<version>1.5.1</version>-->
-                        <!--<executions>-->
-                            <!--<execution>-->
-                                <!--<id>default-deploy</id>-->
-                                <!--<phase>deploy</phase>-->
-                                <!--<goals>-->
-                                    <!--<goal>deploy</goal>-->
-                                <!--</goals>-->
-                            <!--</execution>-->
-                        <!--</executions>-->
-                    <!--</plugin>-->
-                <!--</plugins>-->
-            <!--</build>-->
-        <!--</profile>-->
-    <!--</profiles>-->
 </project>

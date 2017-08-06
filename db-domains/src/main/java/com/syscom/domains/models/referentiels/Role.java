@@ -1,19 +1,32 @@
 package com.syscom.domains.models.referentiels;
 
 import com.syscom.domains.models.BaseBean;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.util.List;
 
 /**
- * Classe réalisant le mapping Objet <==> Relationnel des rôles des urilisateurs
+ * Classe réalisant le mapping Objet <=> Relationnel des rôles des utilisateurs
  *
  * Created by Eric Legba on 27/07/17.
  */
 @Data
 @Builder
-@ToString(exclude = {"id", "fonctionnalites"})
+@ToString(exclude = {"fonctionnalites"})
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {"fonctionnalites"})
@@ -33,7 +46,7 @@ public class Role extends BaseBean {
     @Column(name = "R_LIBELLE", nullable = false)
     private String libelle;
 
-    @ManyToMany(mappedBy="roles")
+    @ManyToMany(mappedBy="roles", fetch = FetchType.EAGER)
     private List<Fonctionnalite> fonctionnalites;
 
 }

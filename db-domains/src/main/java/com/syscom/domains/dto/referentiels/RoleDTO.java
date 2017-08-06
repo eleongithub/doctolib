@@ -1,4 +1,4 @@
-package com.syscom.domains.dto;
+package com.syscom.domains.dto.referentiels;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,27 +8,22 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  *
- * Classe DTO des jetons d'authentification.
+ * Classe DTO d'un rôle.
  *
- * Created by Eric Legba on 27/07/17.
+ * Created by Eric Legba on 02/08/17.
  */
-
 @Data
 @Builder
 @ToString(exclude = {})
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {})
-public class TokenDTO implements Serializable {
+public class RoleDTO implements Serializable {
 
-    private String value;
-
-    private LocalDateTime dateExpiration;
-
-    private Long userId;
+    private String code;
+    private String libelle;
 
 }

@@ -4,15 +4,20 @@ import com.syscom.domains.converters.LocalDateTimeConverter;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-
 import static java.time.LocalDateTime.now;
 
 /**
- * @author el1638en
+ *
+ * Super-classe contenant les champs techniques associés  aux tables de la BDD.
+ *
+ * @author Eric Legba
  * @since 08/06/17 17:42
  */
 @MappedSuperclass
@@ -30,13 +35,13 @@ public class BaseBean implements Serializable {
 	protected LocalDateTime updateDate;
 
 	/**
-	 * Avant un persist en BDD, mise à jour des dates techniques s'ils étaient nulles
+	 * Avant d'enregistrer un objet en BDD, mise à jour des dates techniques s'ils étaient nulles
 	 *
 	 */
 	@PrePersist
 	void  prePersist(){
-		this.createDate = (this.createDate == null ? now()  : this.createDate);
-		this.updateDate = (this.updateDate == null ? now() : this.updateDate);
+		this.createDate = this.createDate == null ? now()  : this.createDate;
+		this.updateDate = this.updateDate == null ? now() : this.updateDate;
 	}
 
 	/**

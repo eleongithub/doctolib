@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
- * @author el1638en
+ * @author Eric Legba
  * @since 14/06/17 16:54
  */
 @Configuration

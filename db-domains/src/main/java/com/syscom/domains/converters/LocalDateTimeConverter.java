@@ -6,7 +6,9 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 /**
- * Created by ansible on 30/07/17.
+ * Classe converter pour convertir les dates de type java {@LocalDateTime} vers le type SQL {@Timestamp} et vice-versa.
+ *
+ * Created by Eric Legba on 30/07/17.
  */
 @Converter
 public class LocalDateTimeConverter implements AttributeConverter<LocalDateTime, Timestamp> {

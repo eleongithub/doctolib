@@ -10,7 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 /**
  * Configuration Spring pour la couche métier de l'application
  *
- * @author el1638en
+ * @author Eric Legba
  * @since 14/06/17 14:32
  */
 @Configuration

@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 /**
  * Contrat d'interface des services métiers des utilisateurs {@link com.syscom.domains.models.User}
  *
- * @author el1638en
+ * @author Eric Legba
  * @since 09/06/17 17:19
  */
 public interface UserService {
@@ -20,9 +20,11 @@ public interface UserService {
 	void create(UserDTO userDTO) throws BusinessException;
 
 	/**
-	 * Authentification d'un utilisateur à partir d'une autorisation (Login:MDP(Base 64))
-	 * @param authorization
+	 * Authentifier un utilisateur à partir de son login et retourner un jeton d'authentification.
+	 * @param login
 	 * @return Jeton d'authentification
      */
-	String authenticate(String authorization) throws UsernameNotFoundException, BusinessException;
+	String authenticate(String login) throws UsernameNotFoundException, BusinessException;
+
+
 }

@@ -27,7 +27,7 @@ public class UserControllerIntegTest extends IntegrationTest {
         ResponseEntity<UserDTO> responseEntity = testRestTemplate.postForEntity("/api/user", userDTO, null);
 
         // verify
-        Assertions.assertThat(responseEntity.getStatusCode()).isNotEqualTo(HttpStatus.CREATED);
+        Assertions.assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
     }
 }

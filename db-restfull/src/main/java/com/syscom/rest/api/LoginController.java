@@ -1,11 +1,14 @@
 package com.syscom.rest.api;
 
-import com.syscom.rest.utils.RestPreconditions;
 import com.syscom.service.UserService;
 import com.syscom.service.exceptions.BusinessException;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,9 +31,8 @@ public class LoginController implements BaseController {
 
 
     /**
-     * API pour authentifier un utilisateur
+     * API pour authentifier un utilisateur et retourner un jeton de sécurité
      *
-     * @param authotization
      * @return token
      * @throws BusinessException
      */
@@ -38,9 +40,10 @@ public class LoginController implements BaseController {
     @ApiOperation(value = "API pour l'authentification des utilisateurs", notes = "Authentification d'un utilisateur")
     @ApiResponses(value = { @ApiResponse(code = 400, message = "Bad Request param error")
     })
-    public String login(@ApiParam(value = "authorization(Login:MDP(Base 64))", required = true)@RequestBody String authotization) throws BusinessException {
-        RestPreconditions.checkFound(authotization);
-        return userService.authenticate(authotization);
+    public String login() throws BusinessException {
+        //Récupérer le login de l'utilisateur à partir du context Spring Security
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userService.authenticate(user.getUsername());
     }
 
 }

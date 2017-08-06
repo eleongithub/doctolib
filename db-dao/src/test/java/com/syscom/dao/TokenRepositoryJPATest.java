@@ -3,9 +3,12 @@ package com.syscom.dao;
 import com.syscom.domains.models.Token;
 import com.syscom.domains.models.User;
 import com.syscom.domains.models.referentiels.Role;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -63,10 +66,12 @@ public class TokenRepositoryJPATest extends RepositoryJPATest {
         testEntityManager.persistAndFlush(token);
 
         // when
-        Token resultToken = tokenRepository.findByuserId(user.getId());
+        List<Token> tokens = tokenRepository.findByUser_Id(user.getId());
 
         // then
-        assertThat(resultToken).isNotNull();
+        assertThat(tokens).isNotNull();
+        Assert.assertEquals(tokens.size(),1);
+        Token resultToken = tokens.get(0);
         assertThat(resultToken.getUser()).isEqualTo(user);
         assertThat(resultToken.getValue()).isEqualTo(VALUE);
         assertThat(resultToken.getCreateDate()).isNotNull();

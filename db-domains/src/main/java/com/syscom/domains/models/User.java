@@ -2,22 +2,36 @@ package com.syscom.domains.models;
 
 
 import com.syscom.domains.models.referentiels.Role;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
- * Classe représentant les données d'un utilisateur de l'application
+ * Classe représentant les données d'un utilisateur.
  *
- * @author el1638en
+ * @author Eric Legba
  * @since 08/06/17 17:42
  */
 @Data
 @Builder
-@ToString(exclude = {"id", "password"})
+@ToString(exclude = {"password"})
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {})
+@EqualsAndHashCode(exclude = {"role"})
 @Entity
 @Table(name = "T_USER")
 public class User extends BaseBean {
@@ -40,7 +54,7 @@ public class User extends BaseBean {
 	@Column(name = "U_PASSWORD")
 	private String password;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="U_ROLE_ID", nullable = false)
 	private Role role;
 

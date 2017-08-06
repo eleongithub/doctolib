@@ -18,21 +18,18 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 /**
  * Implémentation des services métiers des utilisateurs {@link User}
  *
- * @author el1638en
+ * @author Eric Legba
  * @since 09/06/17 17:20
  */
 @Service
@@ -61,7 +58,6 @@ public class UserServiceImpl implements UserService {
 	 * {@inheritDoc}
 	 */
 	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void create(UserDTO userDTO) throws BusinessException {
 
 		Assert.notNull(userDTO, messageSource.getMessage("user.not.null", null, null));
@@ -94,56 +90,51 @@ public class UserServiceImpl implements UserService {
 
 //		Inserer l'utilisateur en BDD
 		 userRepository.save(user);
+
+//		TODO - Envoyer un mail à l'utilisateur pour lui notifier la création de son compte utilisateur
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public String authenticate(String authorization) throws UsernameNotFoundException, BusinessException {
+	public String authenticate(String login) throws UsernameNotFoundException, BusinessException {
 
-		Assert.notNull(authorization,messageSource.getMessage("user.authentication.authorization.not.null", null, null));
+		Assert.notNull(login,messageSource.getMessage("user.authentication.authorization.not.null", null, null));
 
-		String credentials = new String(Base64.getDecoder().decode(authorization.getBytes()));
-//		Split login and password tokens
-		String[] values = StringUtils.split(credentials, ":");
-		if(values==null || values.length!=2){
-			throw new BusinessException(messageSource.getMessage("user.authentication.authorization.invalid", null, null));
-		}
-		String login = values[0];
-		String password = values[1];
 		User user = userRepository.findByLogin(login);
 		if(user==null){
 			throw new BadCredentialsException(messageSource.getMessage("user.authentication.unkonwn.user", null, null));
 		}
-		String encodePassword = passwordEncoder.encode(password);
-		if(StringUtils.equals(encodePassword, user.getPassword())){
-			throw new BadCredentialsException(messageSource.getMessage("user.authentication.bad.credentials", null, null));
-		}
-		Token token = tokenRepository.findByuserId(user.getId());
 
-		if(token!=null){
-			if(token.getDateExpiration().isBefore(LocalDateTime.now())){
-//				Supression du jeton expiré
-				tokenRepository.delete(token);
-
-//				Créer un nouveau jeton
-				TokenDTO tokenDTO = createToken(user.getId());
-				return tokenDTO.getValue();
-
-			}else{
-				return token.getValue();
-			}
-		}else{
-//				Créer un nouveau jeton
+		List<Token> tokens = tokenRepository.findByUser_Id(user.getId());
+		if(tokens.isEmpty()){
+//			Créer un nouveau jeton
 			TokenDTO tokenDTO = createToken(user.getId());
 			return tokenDTO.getValue();
+		}
+
+		Token token = tokens.get(0);
+		if(token.getDateExpiration().isBefore(LocalDateTime.now())){
+//			Supression du jeton expiré
+			tokenRepository.delete(token);
+//			Créer un nouveau jeton
+			TokenDTO tokenDTO = createToken(user.getId());
+			return tokenDTO.getValue();
+		}else{
+			return token.getValue();
 		}
 	}
 
 
+	/**
+	 *
+	 * @param userId
+	 * @return
+	 * @throws BusinessException
+     */
 	private TokenDTO createToken(Long userId) throws BusinessException {
 		TokenDTO tokenDTO = TokenDTO.builder()
-				.userId(userId)
-				.build();
+									.userId(userId)
+									.build();
 		return tokenService.create(tokenDTO);
 	}
 	/**

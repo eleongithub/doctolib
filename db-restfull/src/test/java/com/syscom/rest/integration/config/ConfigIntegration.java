@@ -9,8 +9,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  * Created by Eric Legba on 13/07/17.
  */
 @Configuration
-@EntityScan(basePackages = "com.syscom.domains")
 @ComponentScan(basePackages = {"com.syscom.service", "com.syscom.rest"})
+@EntityScan(basePackages = "com.syscom.domains")
 @EnableJpaRepositories(basePackages = {"com.syscom.dao"})
 public class ConfigIntegration {
+
 }

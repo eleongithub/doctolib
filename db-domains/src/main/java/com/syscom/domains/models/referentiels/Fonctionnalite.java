@@ -1,17 +1,33 @@
 package com.syscom.domains.models.referentiels;
 
 import com.syscom.domains.models.BaseBean;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.util.List;
 
 /**
+ * Classe définissant les informations des fonctionnalités de l'application.
+ *
  * Created by Eric Legba on 27/07/17.
  */
 @Data
 @Builder
-@ToString(exclude = {"id", "roles"})
+@ToString(exclude = {"roles"})
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {"roles"})

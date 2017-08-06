@@ -21,7 +21,7 @@ public interface TokenService {
 
 
     /**
-     * Rechercher un jeton d'authentification en cours de validité à partir de sa valeur
+     * Rechercher un jeton d'authentification en cours de validité.
      *
      * @param value valeur du jeton d'authentification
      * @return jeton d'authentification {@link Token}

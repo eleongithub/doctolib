@@ -6,23 +6,45 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 /**
  * Repository pour effectuer des CRUD des tokens {@link com.syscom.domains.models.Token}
  *
- * @author el1638en
+ * @author Eric Legba
  * @since 27/07/17 21:23
  */
 public interface TokenRepository extends CrudRepository<Token, Long>{
 
-    Token findByValue(String value);
+    /**
+     * Rechercher un jeton d'authentification par sa valeur.
+     *
+     * @param value
+     * @return un jeton d'authentification {@link Token}
+     */
+     Token findByValue(@Param("value")String value);
+//    @Query(name = "findByValue", value = "SELECT t FROM Token t " +
+//                                         "INNER JOIN t.user u " +
+//                                         "INNER JOIN u.role r " +
+//                                         "INNER JOIN r.fonctionnalites f " +
+//                                         "WHERE t.value = :value")
+//    Token findByValue(@Param("value")String value);
 
-    @Query(name = "findByuserId", value = "SELECT t FROM Token t WHERE t.user.id = :id")
-    Token findByuserId(@Param("id") Long id);
+    /**
+     * Rechercher les jetons d'authentification d'un utilisateur
+     *
+     * @param userId
+     * @return liste de jetons {@link Token}
+     */
+    List<Token> findByUser_Id(Long userId);
 
+    /**
+     * Supprimer un jeton qui est expirée
+     *
+     * @param localDateTime
+     */
     @Transactional
     @Modifying
     @Query(name = "deleteExpiredToken", value = "DELETE FROM Token t WHERE t.dateExpiration < :localDateTime")

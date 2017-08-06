@@ -1,21 +1,32 @@
 package com.syscom.rest.config;
 
+import com.syscom.rest.config.security.TokenAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
+import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.util.ArrayList;
+
+import static java.util.Arrays.*;
+
 /**
  *
- * Configuration de la documentation de l'API avec Swagger ( Voir http://www.baeldung.com/swagger-2-documentation-for-spring-rest-api)
+ * Configuration de la documentation de l'API avec Swagger.
+ * Ressources utilisées :
+ *  - http://www.baeldung.com/swagger-2-documentation-for-spring-rest-api
+ *  - https://springfox.github.io/springfox/docs/current/
  *
  * Created by Eric Legba on 02/07/17.
  */
@@ -50,9 +61,10 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter{
                 .groupName("Login API")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage(PACKAGE))
-                .paths(PathSelectors.ant("/api/login/**"))
+                .paths(PathSelectors.ant("/api/login"))
                 .build()
-                .apiInfo(apiInfo());
+                .apiInfo(apiInfo())
+                .globalOperationParameters(new ArrayList<>(asList(createTokenParameter())));
     }
 
     /**
@@ -69,7 +81,8 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter{
                 .apis(RequestHandlerSelectors.basePackage(PACKAGE))
                 .paths(PathSelectors.ant("/api/secured/**"))
                 .build()
-                .apiInfo(apiInfo());
+                .apiInfo(apiInfo())
+                .globalOperationParameters(new ArrayList<>(asList(createTokenParameter())));
     }
 
     @Override
@@ -88,6 +101,15 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter{
                                               .title("Doctolib REST API")
                                               .contact(new Contact("Eric LEGBA", "homepage", "eric.legba@gmail.com"))
                                               .build();
+    }
+
+    private Parameter createTokenParameter(){
+      return new ParameterBuilder().description("Token de securite")
+                                   .modelRef(new ModelRef("string"))
+                                   .name(TokenAuthenticationFilter.AUTH_HEADER_NAME)
+                                   .parameterType("header")
+                                   .required(true)
+                                   .build();
     }
 
 }

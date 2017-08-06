@@ -9,9 +9,6 @@ import com.syscom.service.exceptions.BusinessException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-
-import java.util.Base64;
-
 import static com.syscom.domains.enums.Role.ADMIN;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -27,6 +24,7 @@ public class UserServiceTest extends ServiceTest {
     private static final String NAME = "NAME";
     private static final String FIRST_NAME = "FIRST_NAME";
     private static final String PASSWORD = "PASSWORD";
+    private static final String LIBELLE = "LIBELLE";
 
     @Autowired
     private UserService userService;
@@ -51,7 +49,7 @@ public class UserServiceTest extends ServiceTest {
     @Test(expected = BusinessException.class)
     public void createUserWithExistLoginThrowException() throws Exception {
         Role role = Role.builder()
-                        .libelle("LIBELLE")
+                        .libelle(LIBELLE)
                         .code(ADMIN.name())
                         .build();
         role = roleRepository.save(role);
@@ -88,7 +86,7 @@ public class UserServiceTest extends ServiceTest {
     @Test(expected = BusinessException.class)
     public void createUserWithUnknownRoleThrowException() throws Exception {
         Role role = Role.builder()
-                        .libelle("LIBELLE")
+                        .libelle(LIBELLE)
                         .code("role")
                         .build();
         roleRepository.save(role);
@@ -105,7 +103,7 @@ public class UserServiceTest extends ServiceTest {
     @Test
     public void createUser() throws BusinessException {
         Role role = Role.builder()
-                        .libelle("LIBELLE")
+                        .libelle(LIBELLE)
                         .code(ADMIN.name())
                         .build();
         roleRepository.save(role);
@@ -123,7 +121,7 @@ public class UserServiceTest extends ServiceTest {
     @Test
     public void authenticateUser() throws BusinessException {
         Role role = Role.builder()
-                .libelle("LIBELLE")
+                .libelle(LIBELLE)
                 .code(ADMIN.name())
                 .build();
         roleRepository.save(role);
@@ -135,9 +133,7 @@ public class UserServiceTest extends ServiceTest {
                 .role(ADMIN.name())
                 .build();
         userService.create(userDTO);
-        String credentials = String.format("%s:%s",LOGIN,PASSWORD);
-        String authorization = Base64.getEncoder().encodeToString(credentials.getBytes());
-        String token = userService.authenticate(authorization);
+        String token = userService.authenticate(LOGIN);
         assertThat(token).isNotNull();
     }
 

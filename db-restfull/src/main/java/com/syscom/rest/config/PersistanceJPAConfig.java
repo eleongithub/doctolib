@@ -1,4 +1,4 @@
-package com.syscom.rest.config.security;
+package com.syscom.rest.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;

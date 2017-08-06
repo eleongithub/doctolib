@@ -11,6 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
+ *
  * Created by Eric Legba on 01/07/17.
  */
 @RunWith(SpringRunner.class)
