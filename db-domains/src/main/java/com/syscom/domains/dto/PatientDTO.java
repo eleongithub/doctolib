@@ -1,5 +1,6 @@
 package com.syscom.domains.dto;
 
+import com.syscom.domains.models.Patient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +23,8 @@ import java.io.Serializable;
 @EqualsAndHashCode(exclude = {})
 public class PatientDTO implements Serializable {
 
+    private Long id;
+
     private String name;
 
     private String firstName;
@@ -31,5 +34,4 @@ public class PatientDTO implements Serializable {
     private String mail;
 
     private String address;
-
 }

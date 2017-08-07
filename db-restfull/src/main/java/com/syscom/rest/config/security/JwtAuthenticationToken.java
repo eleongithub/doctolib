@@ -37,13 +37,4 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
         return token;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
 }
