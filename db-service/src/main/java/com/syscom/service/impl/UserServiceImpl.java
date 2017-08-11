@@ -20,11 +20,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 /**
@@ -127,8 +125,9 @@ public class UserServiceImpl implements UserService {
 
 
 	/**
+	 *Créer un nouveau jeton de securité
 	 *
-	 * @param userId
+	 * @param userId ID de l'utilisateur
 	 * @return
 	 * @throws BusinessException
      */
@@ -138,9 +137,10 @@ public class UserServiceImpl implements UserService {
 									.build();
 		return tokenService.create(tokenDTO);
 	}
+
 	/**
 	 *
-	 * Méthode pour vérifier que les données obligatoires sont rensiegnées
+	 * Méthode pour vérifier que les données obligatoires sont renseignées
 	 *
 	 * @param userDTO Données DTO de l'utilisateur {@link UserDTO}
 	 * @return Liste de message d'erreurs

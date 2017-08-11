@@ -33,8 +33,8 @@ public class LoginController implements BaseController {
     /**
      * API pour authentifier un utilisateur et retourner un jeton de sécurité
      *
-     * @return token
-     * @throws BusinessException
+     * @return token jeton d'authentification à utiliser pour utiliser les APIs sécurisés
+     * @throws BusinessException Exception fonctionnelle {@link BusinessException}
      */
     @RequestMapping(method = RequestMethod.POST)
     @ApiOperation(value = "API pour l'authentification des utilisateurs", notes = "Authentification d'un utilisateur")

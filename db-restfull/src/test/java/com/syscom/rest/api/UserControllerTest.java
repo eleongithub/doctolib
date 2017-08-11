@@ -1,6 +1,5 @@
 package com.syscom.rest.api;
 
-import com.syscom.dao.RoleRepository;
 import com.syscom.domains.dto.UserDTO;
 import com.syscom.domains.enums.Role;
 import org.junit.Before;
@@ -9,25 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static com.syscom.domains.enums.Role.ADMIN;
-
 /**
+ * Test sur le contrôleur de l'API des utilisateurs
+ *
  * Created by Eric Legba on 03/07/17.
  */
 public class UserControllerTest extends ControllerApiTest {
 
-    private static final String LOGIN = "LOGIN";
-    private static final String NAME = "NAME";
-    private static final String FIRST_NAME = "FIRST_NAME";
-    private static final String PASSWORD = "PASSWORD";
 
     private static final String RESOURCE = "/api/user";
 
     @Autowired
     private UserController userController;
-
-    @Autowired
-    private RoleRepository roleRepository;
 
     @Before
     public void setup() throws Exception {
@@ -52,16 +44,12 @@ public class UserControllerTest extends ControllerApiTest {
 
     @Test
     public void whenCreateValidUserThenReturnSuccess() throws Exception {
-        com.syscom.domains.models.referentiels.Role role = com.syscom.domains.models.referentiels.Role.builder()
-                .libelle("LIBELLE")
-                .code(ADMIN.name())
-                .build();
-        roleRepository.save(role);
+        createAdminRole();
         UserDTO userDTO = UserDTO.builder()
-                                 .name(NAME)
-                                 .firstName(FIRST_NAME)
-                                 .password(PASSWORD)
-                                 .login(LOGIN)
+                                 .name(USER_NAME)
+                                 .firstName(USER_FIRST_NAME)
+                                 .password(USER_PASSWORD)
+                                 .login(USER_LOGIN)
                                  .role(Role.ADMIN.name())
                                  .build();
         mockMvc.perform(MockMvcRequestBuilders.post(RESOURCE)

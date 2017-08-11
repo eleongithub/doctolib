@@ -1,5 +1,6 @@
 package com.syscom.rest.config.security;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -16,15 +17,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
 /**
  * Filter pour récupérer le jeton d'authentification et authentifier l'utilisateur.
  *
  * Created by Eric Legba on 02/08/17.
  */
 public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
-
-    public static final String AUTH_HEADER_NAME = "Authorization";
-
 
     public TokenAuthenticationFilter() {
 //        Indiquer ici le pattern des URLs auxquels doivent s'appliquer le filter
@@ -43,7 +43,7 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-        String accessToken = request.getHeader(AUTH_HEADER_NAME);
+        String accessToken = request.getHeader(AUTHORIZATION);
         if (accessToken == null) {
             throw new PreAuthenticatedCredentialsNotFoundException(
                     "No token found in request headers. Unauthorized access.");

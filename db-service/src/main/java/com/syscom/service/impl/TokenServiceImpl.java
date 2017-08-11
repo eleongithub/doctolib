@@ -13,7 +13,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -79,11 +78,17 @@ public class TokenServiceImpl implements TokenService{
         }
     }
 
+    /**
+     * Convertir un objet relationnel Token {@link Token} en objet DTO TodenDTO {@link TokenDTO}
+     * @param token Token {@link Token}
+     * @param user User {@link User}
+     * @return TodenDTO {@link TokenDTO}
+     */
     private TokenDTO convertFrom(Token token, User user){
         return TokenDTO.builder()
-                        .value(token.getValue())
-                        .userId(user.getId())
-                        .dateExpiration(token.getDateExpiration())
-                        .build();
+                       .value(token.getValue())
+                       .userId(user.getId())
+                       .dateExpiration(token.getDateExpiration())
+                       .build();
     }
 }

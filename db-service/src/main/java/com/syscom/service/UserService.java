@@ -26,5 +26,4 @@ public interface UserService {
      */
 	String authenticate(String login) throws UsernameNotFoundException, BusinessException;
 
-
 }

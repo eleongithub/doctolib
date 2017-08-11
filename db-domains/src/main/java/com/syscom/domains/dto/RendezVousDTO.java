@@ -9,29 +9,24 @@ import lombok.ToString;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
+ * Classe DTO des rendez-vous médicaux.
  *
- * Classe DTO des jetons d'authentification.
- *
- * Created by Eric Legba on 27/07/17.
+ * Created by Eric Legba on 11/08/17.
  */
-
 @Data
 @Builder
 @ToString(exclude = {})
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {})
-public class TokenDTO implements Serializable {
+public class RendezVousDTO implements Serializable {
 
-    private String value;
 
-    private LocalDateTime dateExpiration;
+    private LocalDateTime dateBegin;
 
-    private Long userId;
+    private LocalDateTime dateEnd;
 
-    private List<String> fonctionnalites;
-
+    private Long patientId;
 }

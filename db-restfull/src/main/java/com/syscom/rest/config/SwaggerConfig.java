@@ -3,6 +3,7 @@ package com.syscom.rest.config;
 import com.syscom.rest.config.security.TokenAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -106,7 +107,7 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter{
     private Parameter createTokenParameter(){
       return new ParameterBuilder().description("Token de securite")
                                    .modelRef(new ModelRef("string"))
-                                   .name(TokenAuthenticationFilter.AUTH_HEADER_NAME)
+                                   .name(HttpHeaders.AUTHORIZATION)
                                    .parameterType("header")
                                    .required(true)
                                    .build();

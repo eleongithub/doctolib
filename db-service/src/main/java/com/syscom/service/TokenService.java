@@ -11,11 +11,13 @@ import com.syscom.service.exceptions.BusinessException;
  */
 public interface TokenService {
 
+
     /**
-     *
      * Créer un nouveau jeton d'authentification
      *
-     * @param tokenDTO jeton d'authentification {@link TokenDTO}
+     * @param tokenDTO
+     * @return le jeton créé {@link TokenDTO}
+     * @throws BusinessException Exception fonctionnelle {@link BusinessException}
      */
     TokenDTO create (TokenDTO tokenDTO) throws BusinessException;
 

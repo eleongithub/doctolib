@@ -29,13 +29,13 @@
         <repository>
             <id>nexus-releases</id>
             <name>Repository Nexus release</name>
-            <url>http://192.168.43.62:9081/nexus/content/repositories/releases/</url>
+            <url>http://192.168.1.97:9081/nexus/content/repositories/releases/</url>
             <!--TODO : Repo par projet <url>http://ipAdress:port/nexus/content/repositories/DB-RELEASES/</url>-->
         </repository>
         <snapshotRepository>
             <id>nexus-snapshots</id>
             <name>Repository Nexus snapshot</name>
-            <url>http://192.168.43.62:9081/nexus/content/repositories/snapshots/</url>
+            <url>http://192.168.1.97:9081/nexus/content/repositories/snapshots/</url>
             <!-- TODO : Repo par projet <url>http://ipAdress:port/nexus/content/repositories/DB-SNAPSHOTS/</url>-->
         </snapshotRepository>
     </distributionManagement>
@@ -142,6 +142,14 @@
                 <artifactId>jjwt</artifactId>
                 <version>${jjwt.version}</version>
             </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-test -->
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-test</artifactId>
+                <version>4.0.0.RELEASE</version>
+            </dependency>
+
 
         </dependencies>
     </dependencyManagement>

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.List;
 
 /**
@@ -38,11 +37,11 @@ public class PatientController implements BaseController {
     /**
      * API pour ajouter un nouveau patient
      *
-     * @param patientDTO {@link PatientDTO}
-     * @throws Exception fonctionnelle {@link BusinessException}
+     * @param patientDTO paitent à ajouter {@link PatientDTO}
+     * @throws BusinessException Exception fonctionnelle {@link BusinessException}
      */
     @RequestMapping(method = RequestMethod.POST)
-    @Secured(Fonctionnalites.ROLE_F_AJOUTER_PATIENT)
+    @Secured(Fonctionnalites.ROLE_AJOUTER_PATIENT)
     @ApiOperation(value = "Ajouter un nouveau patient", notes = "Ajouter un nouveau patient")
     @ApiResponses(value = { @ApiResponse(code = 400, message = "Bad Request param error")
     })
@@ -52,11 +51,11 @@ public class PatientController implements BaseController {
     }
 
     /**
-     * API pour recuperer la liste des patients
+     * API pour consulter la liste des patients
      *
      */
     @RequestMapping(method = RequestMethod.GET)
-    @Secured(Fonctionnalites.ROLE_F_CONSULTER_PATIENT)
+    @Secured(Fonctionnalites.ROLE_CONSULTER_PATIENT)
     @ApiOperation(value = "Consulter les patients", notes = "Consulter les patients")
     public List<PatientDTO> findAll(){
         return patientService.findAll();
@@ -65,12 +64,12 @@ public class PatientController implements BaseController {
 
     /**
      * API pour rechercher un patient
-     *
      * @param id Id du patient
-     *
+     * @return PatientDTO patient recherché {@link PatientDTO}
+     * @throws BusinessException Exception fonctionnelle {@link BusinessException}
      */
     @RequestMapping(value="/{id}", method = RequestMethod.GET)
-    @Secured(Fonctionnalites.ROLE_F_CONSULTER_PATIENT)
+    @Secured(Fonctionnalites.ROLE_CONSULTER_PATIENT)
     @ApiOperation(value = "Consulter un patient", notes = "Consulter un patient")
     @ApiResponses(value = { @ApiResponse(code = 400, message = "Bad Request param error")})
     public PatientDTO findById(@PathVariable("id")Long id) throws BusinessException{
@@ -84,10 +83,10 @@ public class PatientController implements BaseController {
     *
     * @param id Id du patient
     * @param patientDTO {@link PatientDTO}
-    * @throws Exception fonctionnelle {@link BusinessException}
+    * @throws BusinessException Exception fonctionnelle {@link BusinessException}
     */
     @RequestMapping(value="/{id}", method = RequestMethod.PUT)
-    @Secured(Fonctionnalites.ROLE_F_MODIFIER_PATIENT)
+    @Secured(Fonctionnalites.ROLE_MODIFIER_PATIENT)
     @ApiOperation(value = "Modifier un patient", notes = "Modifier un patient")
     @ApiResponses(value = { @ApiResponse(code = 400, message = "Bad Request param error")})
     public PatientDTO update(@PathVariable("id")Long id,@RequestBody PatientDTO patientDTO) throws BusinessException {
@@ -104,7 +103,7 @@ public class PatientController implements BaseController {
      * @throws Exception fonctionnelle {@link BusinessException}
      */
     @RequestMapping(value="/{id}", method = RequestMethod.DELETE)
-    @Secured(Fonctionnalites.ROLE_F_SUPPRIMER_PATIENT)
+    @Secured(Fonctionnalites.ROLE_SUPPRIMER_PATIENT)
     @ApiOperation(value = "Supprimer un patient", notes = "Supprimer un patient")
     @ApiResponses(value = { @ApiResponse(code = 400, message = "Bad Request param error") })
     public void delete(@PathVariable("id")Long id) throws BusinessException {

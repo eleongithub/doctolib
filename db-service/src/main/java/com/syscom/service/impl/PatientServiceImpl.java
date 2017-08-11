@@ -11,7 +11,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,7 +23,6 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
  *
  * Created by Eric Legba on 01/08/17.
  */
-
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class PatientServiceImpl implements PatientService {
@@ -60,6 +58,9 @@ public class PatientServiceImpl implements PatientService {
 //		TODO - Envoyer un mail au patient pour lui notifier la création de son compte
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PatientDTO findById(Long id) throws BusinessException {
         Assert.notNull(id, messageSource.getMessage("patient.id.not.null", null, null));
@@ -68,15 +69,17 @@ public class PatientServiceImpl implements PatientService {
             throw new BusinessException(messageSource.getMessage("patient.unknown", null, null));
         }
         return convertToDTO(patient);
-
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<PatientDTO> findAll() {
         Iterable<Patient> patients = patientRepository.findAll();
         return StreamSupport.stream(patients.spliterator(), false)
-                     .map(patient -> convertToDTO(patient))
-                     .collect(Collectors.toList());
+                            .map(patient -> convertToDTO(patient))
+                            .collect(Collectors.toList());
     }
 
     /**
@@ -105,11 +108,9 @@ public class PatientServiceImpl implements PatientService {
     public void delete(Long id) throws BusinessException {
         Assert.notNull(id, messageSource.getMessage("patient.id.not.null", null, null));
         Patient patient = patientRepository.findOne(id);
-
         if(patient==null){
             throw new BusinessException(messageSource.getMessage("patient.unknown", null, null));
         }
-
         patientRepository.delete(patient);
     }
 
@@ -134,6 +135,12 @@ public class PatientServiceImpl implements PatientService {
         return errors;
     }
 
+    /**
+     * Créer un objet DTO de patient
+     *
+     * @param patient {@link Patient}
+     * @return patientDTO {@link PatientDTO}
+     */
     private PatientDTO convertToDTO(Patient patient){
         return PatientDTO.builder()
                          .id(patient.getId())

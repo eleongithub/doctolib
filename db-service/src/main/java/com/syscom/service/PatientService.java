@@ -2,7 +2,6 @@ package com.syscom.service;
 
 import com.syscom.domains.dto.PatientDTO;
 import com.syscom.service.exceptions.BusinessException;
-
 import java.util.List;
 
 /**
