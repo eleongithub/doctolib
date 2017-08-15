@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * Created by Eric Legba on 02/07/17.
  */
-@Api(value = UserController.PATH, description = "Création d'un compte utilisateur")
+@Api(value = UserController.PATH)
 @RestController
 @RequestMapping(UserController.PATH)
 public class UserController implements BaseController {

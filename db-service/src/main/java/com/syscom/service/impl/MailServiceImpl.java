@@ -2,6 +2,8 @@ package com.syscom.service.impl;
 
 import com.syscom.domains.dto.MailDTO;
 import com.syscom.service.MailService;
+import com.syscom.service.MessageService;
+import com.syscom.service.exceptions.BusinessException;
 import com.syscom.service.exceptions.TechnicalException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,6 +35,12 @@ public class MailServiceImpl implements MailService {
     @Autowired
     private TemplateEngine templateEngine;
 
+    @Autowired
+    private MessageService messageService;
+
+    @Value("${push.mail.block.msg}")
+    private String blockMsg;
+
     @Value("${doctolib.mail.send.from}")
     private String mailFrom;
 
@@ -40,31 +48,31 @@ public class MailServiceImpl implements MailService {
     private boolean pushMail;
 
     @Override
-    public void sendMessage(MailDTO mailDTO) {
+    public void sendMessage(MailDTO mailDTO) throws BusinessException {
         if(pushMail) {
-            try {
-                MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-                MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-                message.setSubject(mailDTO.getSubject());
-                String from = mailDTO.getFrom() != null ? mailDTO.getFrom() : mailFrom;
-                message.setFrom(from);
-                message.setTo(mailDTO.getTo());
-                Context context = new Context();
-                mailDTO.getDatas().forEach((key, value) -> {
-                    context.setVariable(key, value);
-                });
-                String htmlContent = templateEngine.process((new ClassPathResource(mailDTO.getTemplate()).getPath()), context);
-                message.setText(htmlContent, true);
-
-                if (mailDTO.getAttachments() != null) {
-                    for (File file : mailDTO.getAttachments()) {
-                        message.addAttachment(file.getName(), file);
-                    }
-                }
-                javaMailSender.send(mimeMessage);
-            } catch (javax.mail.MessagingException e) {
-                throw new TechnicalException(e.getMessage());
-            }
+            throw new BusinessException(blockMsg);
         }
+        try {
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            message.setSubject(mailDTO.getSubject());
+            String from = mailDTO.getFrom() != null ? mailDTO.getFrom() : mailFrom;
+            message.setFrom(from);
+            message.setTo(mailDTO.getTo());
+            Context context = new Context();
+            mailDTO.getDatas().forEach((key, value) -> context.setVariable(key, value));
+            String htmlContent = templateEngine.process(new ClassPathResource(mailDTO.getTemplate()).getPath(), context);
+            message.setText(htmlContent, true);
+
+            if (mailDTO.getAttachments() != null) {
+                for (File file : mailDTO.getAttachments()) {
+                    message.addAttachment(file.getName(), file);
+                }
+            }
+            javaMailSender.send(mimeMessage);
+        } catch (javax.mail.MessagingException e) {
+            throw new TechnicalException(e.getMessage());
+        }
+
     }
 }

@@ -24,7 +24,7 @@ import java.util.List;
  *
  * Created by Eric Legba on 01/08/17.
  */
-@Api(value = PatientController.PATH, description = "API pour la gestion des patients")
+@Api(value = PatientController.PATH)
 @RestController
 @RequestMapping(PatientController.PATH)
 public class PatientController implements BaseController {

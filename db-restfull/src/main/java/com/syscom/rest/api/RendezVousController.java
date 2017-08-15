@@ -24,7 +24,7 @@ import java.util.List;
  *
  * Created by Eric Legba on 11/08/17.
  */
-@Api(value = RendezVousController.PATH, description = "API pour la gestion des rendez-vous")
+@Api(value = RendezVousController.PATH)
 @RestController
 @RequestMapping(RendezVousController.PATH)
 public class RendezVousController implements BaseController {

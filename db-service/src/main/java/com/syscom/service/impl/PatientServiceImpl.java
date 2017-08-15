@@ -28,6 +28,9 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 @Transactional(rollbackFor = Exception.class)
 public class PatientServiceImpl implements PatientService {
 
+    private static final String PATIENT_ID_NOT_NULL_KEY ="patient.id.not.null";
+    private static final String PATIENT_UNKNOWN_KEY = "patient.unknown";
+
     @Autowired
     private MessageService messageService;
 
@@ -63,10 +66,10 @@ public class PatientServiceImpl implements PatientService {
      */
     @Override
     public PatientDTO findById(Long id) throws BusinessException {
-        Assert.notNull(id, messageService.getMessage("patient.id.not.null"));
+        Assert.notNull(id, messageService.getMessage(PATIENT_ID_NOT_NULL_KEY));
         Patient patient = patientRepository.findOne(id);
         if(patient==null){
-            throw new BusinessException(messageService.getMessage("patient.unknown"));
+            throw new BusinessException(messageService.getMessage(PATIENT_UNKNOWN_KEY));
         }
         return convertToDTO(patient);
     }
@@ -87,12 +90,12 @@ public class PatientServiceImpl implements PatientService {
      */
     @Override
     public PatientDTO update(Long id, PatientDTO patientDTO) throws BusinessException {
-        Assert.notNull(id, messageService.getMessage("patient.id.not.null"));
+        Assert.notNull(id, messageService.getMessage(PATIENT_ID_NOT_NULL_KEY));
         Assert.notNull(patientDTO, messageService.getMessage("patient.not.null"));
         Patient patient = patientRepository.findOne(id);
 
         if(patient==null || patient.getId() != patientDTO.getId()){
-            throw new BusinessException(messageService.getMessage("patient.unknown"));
+            throw new BusinessException(messageService.getMessage(PATIENT_UNKNOWN_KEY));
         }
         patient.setAddress(patientDTO.getAddress());
         patient.setMail(patientDTO.getMail());
@@ -106,10 +109,10 @@ public class PatientServiceImpl implements PatientService {
      */
     @Override
     public void delete(Long id) throws BusinessException {
-        Assert.notNull(id, messageService.getMessage("patient.id.not.null"));
+        Assert.notNull(id, messageService.getMessage(PATIENT_ID_NOT_NULL_KEY));
         Patient patient = patientRepository.findOne(id);
         if(patient==null){
-            throw new BusinessException(messageService.getMessage("patient.unknown"));
+            throw new BusinessException(messageService.getMessage(PATIENT_UNKNOWN_KEY));
         }
         patientRepository.delete(patient);
     }

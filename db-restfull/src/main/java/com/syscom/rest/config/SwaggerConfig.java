@@ -1,6 +1,5 @@
 package com.syscom.rest.config;
 
-import com.syscom.rest.config.security.TokenAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -20,7 +19,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.ArrayList;
 
-import static java.util.Arrays.*;
+import static java.util.Arrays.asList;
 
 /**
  *

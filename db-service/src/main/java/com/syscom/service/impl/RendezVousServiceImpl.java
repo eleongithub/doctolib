@@ -35,6 +35,8 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 @Transactional(rollbackFor = Exception.class)
 public class RendezVousServiceImpl implements RendezVousService{
 
+    private static final String RDV_ID_NOT_NULL = "rdv.id.not.null";
+
     @Autowired
     private MessageService messageService;
 
@@ -75,7 +77,7 @@ public class RendezVousServiceImpl implements RendezVousService{
         rendezVousRepository.save(rendezVous);
 
 //      4 - Envoyer le mail de confirmation au patient
-        if(!isEmpty(patient.getMail())){
+        if(patient!=null && !isEmpty(patient.getMail())){
             Map<String,Object> datas = new HashMap<>();
             datas.put("name",patient.getName());
             datas.put("firstname",patient.getFirstName());
@@ -109,7 +111,7 @@ public class RendezVousServiceImpl implements RendezVousService{
      */
     @Override
     public RendezVousDTO findById(Long id) throws BusinessException {
-        Assert.notNull(id, messageService.getMessage("rdv.id.not.null"));
+        Assert.notNull(id, messageService.getMessage(RDV_ID_NOT_NULL));
         RendezVous rendezVous = rendezVousRepository.findOne(id);
         if(rendezVous==null){
             throw new BusinessException(messageService.getMessage("rdv.unknown"));
@@ -123,12 +125,12 @@ public class RendezVousServiceImpl implements RendezVousService{
     @Override
     public RendezVousDTO update(Long id, RendezVousDTO rendezVousDTO) throws BusinessException {
 //      1 - Vérifier que l'ID et le rendez-vous sont non nuls.
-        Assert.notNull(id, messageService.getMessage("rdv.id.not.null"));
+        Assert.notNull(id, messageService.getMessage(RDV_ID_NOT_NULL));
         Assert.notNull(rendezVousDTO, messageService.getMessage("rdv.not.null"));
 
 //      2 - Vérifier que le rendez-vous existe déjà en BDD
         RendezVous rendezVous = rendezVousRepository.findOne(id);
-        Assert.notNull(rendezVous, messageService.getMessage("rdv.id.not.null"));
+        Assert.notNull(rendezVous, messageService.getMessage("rdv.unknown"));
 
         Patient patient = null;
         if(rendezVousDTO.getPatientId()!=null){
@@ -157,11 +159,11 @@ public class RendezVousServiceImpl implements RendezVousService{
     @Override
     public void delete(Long id) throws BusinessException {
 //      1 - Vérifier que l'ID est non nul.
-        Assert.notNull(id, messageService.getMessage("rdv.id.not.null"));
+        Assert.notNull(id, messageService.getMessage(RDV_ID_NOT_NULL));
 
 //      2 - Vérifier que le rendez-vous existe
         RendezVous rendezVous = rendezVousRepository.findOne(id);
-        Assert.notNull(rendezVous, messageService.getMessage("rdv.id.not.null"));
+        Assert.notNull(rendezVous, messageService.getMessage("rdv.unknownl"));
 
 //      3 - Supprimer le rendez-vous
         rendezVousRepository.delete(id);
@@ -190,10 +192,9 @@ public class RendezVousServiceImpl implements RendezVousService{
             errors.add(messageService.getMessage("rdv.date.end.empty"));
         }
 
-        if(rendezVousDTO.getDateBegin()!=null && rendezVousDTO.getDateEnd()!=null){
-            if(rendezVousDTO.getDateBegin().isAfter(rendezVousDTO.getDateEnd())){
+        if(rendezVousDTO.getDateBegin()!=null && rendezVousDTO.getDateEnd()!=null
+                && rendezVousDTO.getDateBegin().isAfter(rendezVousDTO.getDateEnd())){
                 errors.add(messageService.getMessage("rdv.date_begin.before.date_end.empty"));
-            }
         }
         return errors;
     }

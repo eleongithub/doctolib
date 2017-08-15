@@ -4,6 +4,7 @@ import com.syscom.domains.converters.LocalDateTimeConverter;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.MappedSuperclass;
@@ -11,6 +12,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
 import static java.time.LocalDateTime.now;
 
 /**

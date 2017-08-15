@@ -16,8 +16,8 @@ import java.util.Map;
  * Created by Eric Legba on 15/08/17.
  */
 @Data
-@EqualsAndHashCode
-@ToString(exclude = {"fichiersJoints", "donnees"})
+@EqualsAndHashCode(exclude = {"attachments", "datas"})
+@ToString(exclude = {"attachments", "datas"})
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,5 +28,5 @@ public class MailDTO implements Serializable {
     private String subject;
     private String template;
     private List<File> attachments;
-    private Map<String, Object> datas;
+    private transient Map<String, Object> datas;
 }
