@@ -30,6 +30,9 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SpringSecurityConfig {
 
+    private SpringSecurityConfig() {
+        throw new IllegalAccessError("Spring Security Configuration class");
+    }
 
     /**
      * Configuration de sécurité de l'API Rest secured dont l'acces est securisé par Token
