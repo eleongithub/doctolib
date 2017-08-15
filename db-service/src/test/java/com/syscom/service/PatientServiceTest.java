@@ -99,6 +99,29 @@ public class PatientServiceTest extends ServiceTest {
         Assertions.assertThat(result.getMail()).isEqualTo(patientDTO.getMail());
     }
 
+    @Test(expected = BusinessException.class)
+    public void findPatientByIdWithWrongId() throws Exception {
+        PatientDTO result = patientService.findById(Long.valueOf(100));
+    }
+
+    @Test
+    public void deletePatient() throws Exception {
+        PatientDTO patientDTO = PatientDTO.builder()
+                .name(NAME)
+                .firstName(FIRST_NAME)
+                .phone(PHONE)
+                .address(ADDRESS)
+                .mail(MAIL)
+                .build();
+        patientService.create(patientDTO);
+
+        List<PatientDTO> patients = patientService.findAll();
+
+        patientService.delete(patients.get(0).getId());
+
+        Assertions.assertThat(patientService.findAll()).isEmpty();
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void updatePatientWithoutIdThrowException() throws Exception {
         PatientDTO patientDTO = PatientDTO.builder()
