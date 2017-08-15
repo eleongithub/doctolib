@@ -5,6 +5,9 @@ package com.syscom.rest.utils;
  */
 public class RestPreconditions {
 
+    private RestPreconditions() {
+        throw new IllegalAccessError("RestPreconditions class");
+    }
 
     public static <T> T checkFound(final T resource) {
         if (resource == null) {

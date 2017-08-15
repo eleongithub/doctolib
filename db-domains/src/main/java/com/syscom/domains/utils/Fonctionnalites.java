@@ -7,6 +7,11 @@ package com.syscom.domains.utils;
  */
 public class Fonctionnalites {
 
+    private Fonctionnalites() {
+        throw new IllegalAccessError("Fonctionnalites class");
+    }
+
+
     public static final String ROLE_PREFIX = "ROLE_";
     public static final String ROLE_AJOUTER_PATIENT = ROLE_PREFIX+"AJOUTER_PATIENT";
     public static final String ROLE_CONSULTER_PATIENT = ROLE_PREFIX+"CONSULTER_PATIENT";

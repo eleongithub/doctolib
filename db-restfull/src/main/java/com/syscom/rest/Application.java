@@ -18,6 +18,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableAutoConfiguration
 public class Application {
 
+	private Application() {
+		throw new IllegalAccessError("Application main class");
+	}
+
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
