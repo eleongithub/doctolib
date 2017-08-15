@@ -16,7 +16,7 @@ public class TechnicalException extends RuntimeException {
      *
      * @param message of exception.
      */
-    public TechnicalException(String message) {
+    public TechnicalException(final String message) {
         super(message);
         this.message = message;
     }

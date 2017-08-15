@@ -95,6 +95,7 @@ public class SpringSecurityConfig {
     public static class LoginApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
         @Bean
+        @Override
         public UserDetailsService userDetailsService(){
             return new DbUserDetailsService();
         }

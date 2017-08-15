@@ -47,7 +47,7 @@ public class DbServiceConfig {
 	@Bean
 	public TemplateEngine templateEngine() {
 		final SpringTemplateEngine templateEngine = new SpringTemplateEngine();
-		templateEngine.addTemplateResolver(this.htmlTemplateResolver());
+		templateEngine.addTemplateResolver(htmlTemplateResolver());
 		return templateEngine;
 	}
 

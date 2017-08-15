@@ -25,12 +25,6 @@ public interface TokenRepository extends CrudRepository<Token, Long>{
      * @return un jeton d'authentification {@link Token}
      */
      Token findByValue(@Param("value")String value);
-//    @Query(name = "findByValue", value = "SELECT t FROM Token t " +
-//                                         "INNER JOIN t.user u " +
-//                                         "INNER JOIN u.role r " +
-//                                         "INNER JOIN r.fonctionnalites f " +
-//                                         "WHERE t.value = :value")
-//    Token findByValue(@Param("value")String value);
 
     /**
      * Rechercher les jetons d'authentification d'un utilisateur
