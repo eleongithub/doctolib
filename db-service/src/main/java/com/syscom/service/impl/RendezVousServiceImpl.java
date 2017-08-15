@@ -86,11 +86,11 @@ public class RendezVousServiceImpl implements RendezVousService{
             datas.put("dateRdv",formatDateTime);
             String subject = messageService.getMessage("patient.rdv.mail.subject");
             MailDTO mailDTO = MailDTO.builder()
-                    .to(patient.getMail())
-                    .subject(subject)
-                    .datas(datas)
-                    .template("create-rdv")
-                    .build();
+                                     .to(patient.getMail())
+                                     .subject(subject)
+                                     .datas(datas)
+                                     .template("create-rdv")
+                                     .build();
             mailService.sendMessage(mailDTO);
         }
     }
@@ -102,7 +102,7 @@ public class RendezVousServiceImpl implements RendezVousService{
     public List<RendezVousDTO> findAll() {
         Iterable<RendezVous> rdvs = rendezVousRepository.findAll();
         return StreamSupport.stream(rdvs.spliterator(), false)
-                            .map(rendezVous -> convertToDTO(rendezVous))
+                            .map(this::convertToDTO)
                             .collect(Collectors.toList());
     }
 

@@ -2,7 +2,6 @@ package com.syscom.service.impl;
 
 import com.syscom.domains.dto.MailDTO;
 import com.syscom.service.MailService;
-import com.syscom.service.MessageService;
 import com.syscom.service.exceptions.BusinessException;
 import com.syscom.service.exceptions.TechnicalException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +34,6 @@ public class MailServiceImpl implements MailService {
     @Autowired
     private TemplateEngine templateEngine;
 
-    @Autowired
-    private MessageService messageService;
 
     @Value("${push.mail.block.msg}")
     private String blockMsg;

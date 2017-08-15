@@ -81,7 +81,7 @@ public class PatientServiceImpl implements PatientService {
     public List<PatientDTO> findAll() {
         Iterable<Patient> patients = patientRepository.findAll();
         return StreamSupport.stream(patients.spliterator(), false)
-                            .map(patient -> convertToDTO(patient))
+                            .map(this::convertToDTO)
                             .collect(Collectors.toList());
     }
 
