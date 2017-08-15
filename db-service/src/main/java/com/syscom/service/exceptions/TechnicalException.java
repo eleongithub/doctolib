@@ -20,4 +20,14 @@ public class TechnicalException extends RuntimeException {
         super(message);
         this.message = message;
     }
+
+    /**
+     * Constructeur.
+     *
+     * @param cause of exception.
+     */
+    public TechnicalException(Throwable cause) {
+        super(cause);
+        this.message = cause.getMessage();
+    }
 }

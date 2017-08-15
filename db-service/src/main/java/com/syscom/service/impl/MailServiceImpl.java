@@ -67,8 +67,8 @@ public class MailServiceImpl implements MailService {
                 }
             }
             javaMailSender.send(mimeMessage);
-        } catch (javax.mail.MessagingException e) {
-            throw new TechnicalException(e.getMessage());
+        } catch (javax.mail.MessagingException exception) {
+            throw new TechnicalException(exception);
         }
 
     }
