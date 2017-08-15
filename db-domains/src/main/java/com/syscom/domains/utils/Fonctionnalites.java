@@ -5,22 +5,22 @@ package com.syscom.domains.utils;
  *
  * Created by Eric Legba on 29/07/17.
  */
-public class Fonctionnalites {
+public interface Fonctionnalites {
 
-    private Fonctionnalites() {
-        throw new IllegalAccessError("Fonctionnalites class");
-    }
+//    private Fonctionnalites() {
+//        throw new IllegalAccessError("Fonctionnalites class");
+//    }
 
 
-    public static final String ROLE_PREFIX = "ROLE_";
-    public static final String ROLE_AJOUTER_PATIENT = ROLE_PREFIX+"AJOUTER_PATIENT";
-    public static final String ROLE_CONSULTER_PATIENT = ROLE_PREFIX+"CONSULTER_PATIENT";
-    public static final String ROLE_MODIFIER_PATIENT = ROLE_PREFIX+"MODIFIER_PATIENT";
-    public static final String ROLE_SUPPRIMER_PATIENT = ROLE_PREFIX+"SUPPRIMER_PATIENT";
-    public static final String ROLE_CREER_RENDEZ_VOUS = ROLE_PREFIX+"AJOUTER_RENDEZ_VOUS";
-    public static final String ROLE_CONSULTER_RENDEZ_VOUS = ROLE_PREFIX+"CONSULTER_RENDEZ_VOUS";
-    public static final String ROLE_MODIFIER_RENDEZ_VOUS = ROLE_PREFIX+"MODIFIER_RENDEZ_VOUS";
-    public static final String ROLE_SUPPRIMER_RENDEZ_VOUS = ROLE_PREFIX+"SUPPRIMER_RENDEZ_VOUS";
+    String ROLE_PREFIX = "ROLE_";
+    String ROLE_AJOUTER_PATIENT = ROLE_PREFIX+"AJOUTER_PATIENT";
+    String ROLE_CONSULTER_PATIENT = ROLE_PREFIX+"CONSULTER_PATIENT";
+    String ROLE_MODIFIER_PATIENT = ROLE_PREFIX+"MODIFIER_PATIENT";
+    String ROLE_SUPPRIMER_PATIENT = ROLE_PREFIX+"SUPPRIMER_PATIENT";
+    String ROLE_CREER_RENDEZ_VOUS = ROLE_PREFIX+"AJOUTER_RENDEZ_VOUS";
+    String ROLE_CONSULTER_RENDEZ_VOUS = ROLE_PREFIX+"CONSULTER_RENDEZ_VOUS";
+    String ROLE_MODIFIER_RENDEZ_VOUS = ROLE_PREFIX+"MODIFIER_RENDEZ_VOUS";
+    String ROLE_SUPPRIMER_RENDEZ_VOUS = ROLE_PREFIX+"SUPPRIMER_RENDEZ_VOUS";
 
 
 }
