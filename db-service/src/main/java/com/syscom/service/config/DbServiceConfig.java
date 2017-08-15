@@ -44,7 +44,6 @@ public class DbServiceConfig {
 		return  new BCryptPasswordEncoder();
 	}
 
-
 	@Bean
 	public TemplateEngine templateEngine() {
 		final SpringTemplateEngine templateEngine = new SpringTemplateEngine();

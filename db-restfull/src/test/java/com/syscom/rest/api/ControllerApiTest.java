@@ -6,6 +6,7 @@ import com.syscom.domains.dto.UserDTO;
 import com.syscom.domains.models.referentiels.Fonctionnalite;
 import com.syscom.domains.models.referentiels.Role;
 import com.syscom.domains.utils.Fonctionnalites;
+import com.syscom.rest.ApiTestConfiguration;
 import com.syscom.rest.Application;
 import com.syscom.rest.exception.handler.DbEntityExceptionHandler;
 import com.syscom.service.UserService;
@@ -24,13 +25,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.context.WebApplicationContext;
-
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
 import static com.syscom.domains.enums.Role.ADMIN;
 import static com.syscom.domains.enums.Role.ASSISTANTE_DIRECTION;
 import static org.apache.commons.lang3.StringUtils.substringAfter;
@@ -41,7 +40,7 @@ import static org.apache.commons.lang3.StringUtils.substringAfter;
  * Created by Eric Legba on 03/07/17.
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = Application.class)
+@SpringBootTest(classes = {Application.class, ApiTestConfiguration.class})
 @WebAppConfiguration
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public abstract class ControllerApiTest {
@@ -79,7 +78,6 @@ public abstract class ControllerApiTest {
 
     @Autowired
     private FonctionnaliteRepository fonctionnaliteRepository;
-
 
     @Autowired
     void setConverters(HttpMessageConverter<?>[] converters) {

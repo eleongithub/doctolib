@@ -14,6 +14,7 @@ import com.syscom.service.MessageService;
 import com.syscom.service.TokenService;
 import com.syscom.service.UserService;
 import com.syscom.service.exceptions.BusinessException;
+import com.syscom.service.utils.MailValidator;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,19 +101,21 @@ public class UserServiceImpl implements UserService {
 //		Inserer l'utilisateur en BDD
 		 userRepository.save(user);
 
+		if(!isEmpty(userDTO.getMail())){
 //		Envoyer un mail de notification à l'utilisateur.
-		Map<String,Object> datas = new HashMap<>();
-		datas.put("name",user.getName());
-		datas.put("firstname",user.getFirstName());
-		datas.put("login",user.getLogin());
-		String subject = messageService.getMessage("user.create.account.mail.subject");
-		MailDTO mailDTO = MailDTO.builder()
-								 .to(user.getMail())
-								 .subject(subject)
-								 .datas(datas)
-								 .template("user-create-account")
-								 .build();
-		mailService.sendMessage(mailDTO);
+			Map<String,Object> datas = new HashMap<>();
+			datas.put("name",user.getName());
+			datas.put("firstname",user.getFirstName());
+			datas.put("login",user.getLogin());
+			String subject = messageService.getMessage("user.create.account.mail.subject");
+			MailDTO mailDTO = MailDTO.builder()
+					.to(user.getMail())
+					.subject(subject)
+					.datas(datas)
+					.template("user-create-account")
+					.build();
+			mailService.sendMessage(mailDTO);
+		}
 	}
 
 	/** {@inheritDoc} */
@@ -185,6 +188,12 @@ public class UserServiceImpl implements UserService {
 			errors.add(messageService.getMessage("user.password.empty"));
 		}
 
+		if(!isEmpty(userDTO.getMail())){
+			MailValidator mailValidator = new MailValidator();
+			if(!mailValidator.validate(userDTO.getMail())){
+				errors.add(messageService.getMessage("user.password.empty"));
+			}
+		}
 		if(isEmpty(userDTO.getRole())){
 			errors.add(messageService.getMessage("user.role.empty"));
 		}

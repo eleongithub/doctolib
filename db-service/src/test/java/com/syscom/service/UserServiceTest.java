@@ -6,9 +6,10 @@ import com.syscom.domains.dto.UserDTO;
 import com.syscom.domains.models.User;
 import com.syscom.domains.models.referentiels.Role;
 import com.syscom.service.exceptions.BusinessException;
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import static com.syscom.domains.enums.Role.ADMIN;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,6 +35,12 @@ public class UserServiceTest extends ServiceTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Before
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+
+    }
 
     @Test(expected = IllegalArgumentException.class)
     public void createNullUserThrowException() throws Exception {
@@ -71,15 +78,15 @@ public class UserServiceTest extends ServiceTest {
         userService.create(userDTO);
     }
 
-    @Test(expected = DataIntegrityViolationException.class)
+    @Test(expected = BusinessException.class)
     public void createUserWithoutRoleThrowException() throws Exception {
-        User user = User.builder()
-                        .login(LOGIN)
-                        .name(NAME)
-                        .firstName(FIRST_NAME)
-                        .password(PASSWORD)
-                        .build();
-        userRepository.save(user);
+        UserDTO userDTO = UserDTO.builder()
+                                 .login(LOGIN)
+                                 .name(NAME)
+                                 .firstName(FIRST_NAME)
+                                 .password(PASSWORD)
+                                 .build();
+        userService.create(userDTO);
     }
 
 
@@ -91,12 +98,12 @@ public class UserServiceTest extends ServiceTest {
                         .build();
         roleRepository.save(role);
         UserDTO userDTO = UserDTO.builder()
-                                .login(LOGIN)
-                                .name(NAME)
-                                .firstName(FIRST_NAME)
-                                .password(PASSWORD)
-                                .role(ADMIN.name())
-                                .build();
+                                 .login(LOGIN)
+                                 .name(NAME)
+                                 .firstName(FIRST_NAME)
+                                 .password(PASSWORD)
+                                 .role(ADMIN.name())
+                                 .build();
         userService.create(userDTO);
     }
 
@@ -121,17 +128,17 @@ public class UserServiceTest extends ServiceTest {
     @Test
     public void authenticateUser() throws BusinessException {
         Role role = Role.builder()
-                .libelle(LIBELLE)
-                .code(ADMIN.name())
-                .build();
+                        .libelle(LIBELLE)
+                        .code(ADMIN.name())
+                        .build();
         roleRepository.save(role);
         UserDTO userDTO = UserDTO.builder()
-                .login(LOGIN)
-                .name(NAME)
-                .firstName(FIRST_NAME)
-                .password(PASSWORD)
-                .role(ADMIN.name())
-                .build();
+                                 .login(LOGIN)
+                                 .name(NAME)
+                                 .firstName(FIRST_NAME)
+                                 .password(PASSWORD)
+                                 .role(ADMIN.name())
+                                 .build();
         userService.create(userDTO);
         String token = userService.authenticate(LOGIN);
         assertThat(token).isNotNull();

@@ -56,7 +56,6 @@ public class PatientServiceImpl implements PatientService {
                                  .phone(patientDTO.getPhone())
                                  .build();
         patientRepository.save(patient);
-//		TODO - Envoyer un mail au patient pour lui notifier la création de son compte
     }
 
     /**

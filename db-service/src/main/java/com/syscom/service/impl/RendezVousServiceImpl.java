@@ -2,9 +2,11 @@ package com.syscom.service.impl;
 
 import com.syscom.dao.PatientRepository;
 import com.syscom.dao.RendezVousRepository;
+import com.syscom.domains.dto.MailDTO;
 import com.syscom.domains.dto.RendezVousDTO;
 import com.syscom.domains.models.Patient;
 import com.syscom.domains.models.RendezVous;
+import com.syscom.service.MailService;
 import com.syscom.service.MessageService;
 import com.syscom.service.RendezVousService;
 import com.syscom.service.exceptions.BusinessException;
@@ -14,10 +16,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 /**
  * Implémentation des services métiers des rendez-vous {@link com.syscom.domains.models.RendezVous}
@@ -30,6 +37,9 @@ public class RendezVousServiceImpl implements RendezVousService{
 
     @Autowired
     private MessageService messageService;
+
+    @Autowired
+    private MailService mailService;
 
     @Autowired
     private RendezVousRepository rendezVousRepository;
@@ -65,7 +75,22 @@ public class RendezVousServiceImpl implements RendezVousService{
         rendezVousRepository.save(rendezVous);
 
 //      4 - Envoyer le mail de confirmation au patient
-//      TODO - Envoyer le mail
+        if(!isEmpty(patient.getMail())){
+            Map<String,Object> datas = new HashMap<>();
+            datas.put("name",patient.getName());
+            datas.put("firstname",patient.getFirstName());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+            String formatDateTime = rendezVousDTO.getDateBegin().format(formatter);
+            datas.put("dateRdv",formatDateTime);
+            String subject = messageService.getMessage("patient.rdv.mail.subject");
+            MailDTO mailDTO = MailDTO.builder()
+                    .to(patient.getMail())
+                    .subject(subject)
+                    .datas(datas)
+                    .template("create-rdv")
+                    .build();
+            mailService.sendMessage(mailDTO);
+        }
     }
 
     /**

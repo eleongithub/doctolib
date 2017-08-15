@@ -28,7 +28,7 @@ import java.io.File;
 public class MailServiceImpl implements MailService {
 
     @Autowired
-    private JavaMailSender mailSender;
+    private JavaMailSender javaMailSender;
 
     @Autowired
     private TemplateEngine templateEngine;
@@ -36,30 +36,35 @@ public class MailServiceImpl implements MailService {
     @Value("${doctolib.mail.send.from}")
     private String mailFrom;
 
+    @Value("${push.mail}")
+    private boolean pushMail;
+
     @Override
     public void sendMessage(MailDTO mailDTO) {
-        try {
-            MimeMessage mimeMessage = mailSender.createMimeMessage();
-            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-            message.setSubject(mailDTO.getSubject());
-            String from = mailDTO.getFrom()!=null?mailDTO.getFrom():mailFrom;
-            message.setFrom(from);
-            message.setTo(mailDTO.getTo());
-            Context context = new Context();
-            mailDTO.getDatas().forEach((key,value)->{
-                context.setVariable(key, value);
-            });
-            String htmlContent = templateEngine.process((new ClassPathResource(mailDTO.getTemplate()).getPath()), context);
-            message.setText(htmlContent, true);
+        if(pushMail) {
+            try {
+                MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+                MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+                message.setSubject(mailDTO.getSubject());
+                String from = mailDTO.getFrom() != null ? mailDTO.getFrom() : mailFrom;
+                message.setFrom(from);
+                message.setTo(mailDTO.getTo());
+                Context context = new Context();
+                mailDTO.getDatas().forEach((key, value) -> {
+                    context.setVariable(key, value);
+                });
+                String htmlContent = templateEngine.process((new ClassPathResource(mailDTO.getTemplate()).getPath()), context);
+                message.setText(htmlContent, true);
 
-            if(mailDTO.getAttachments()!=null){
-                for(File file : mailDTO.getAttachments()){
-                    message.addAttachment(file.getName(), file);
+                if (mailDTO.getAttachments() != null) {
+                    for (File file : mailDTO.getAttachments()) {
+                        message.addAttachment(file.getName(), file);
+                    }
                 }
+                javaMailSender.send(mimeMessage);
+            } catch (javax.mail.MessagingException e) {
+                throw new TechnicalException(e.getMessage());
             }
-            mailSender.send(mimeMessage);
-        } catch (javax.mail.MessagingException e) {
-            throw new TechnicalException(e.getMessage());
         }
     }
 }

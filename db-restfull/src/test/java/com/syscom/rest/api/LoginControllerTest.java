@@ -29,7 +29,6 @@ public class LoginControllerTest extends ControllerApiTest{
     @Before
     public void setup() throws Exception {
         super.initMockMvc(loginController);
-
     }
 
     @Test
@@ -71,7 +70,4 @@ public class LoginControllerTest extends ControllerApiTest{
                                   .header(HttpHeaders.AUTHORIZATION,builHeaderCredentials(USER_LOGIN,USER_PASSWORD)))
                                   .andExpect(MockMvcResultMatchers.status().isOk());
     }
-
-
-
 }

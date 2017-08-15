@@ -1,10 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title th:remove="all">Rendez-vous de consultation -  Doctolib.</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
+<p>
+    Bonjour <h5 th:text="${name}"></h5> <h5 th:text="${firstname}"></h5>,
+</p>
 
+<p>
+    Nous vous informons que votre rendez-vous de consultation a &eacute;t&eacute; enregistr&eacute;. Ce rendez-vous aura lieu le <h5 th:text="${dateRdv}">.
+</p>
+
+<p>
+    En cas d'empechement, merci de bien vouloir nous informer en nous contactant au 04 72 15 48 76.
+</p>
+
+
+<p>
+    Cordialement,
+    Doctolib.
+</p>
 </body>
 </html>
