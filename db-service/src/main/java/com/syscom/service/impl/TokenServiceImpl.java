@@ -5,14 +5,15 @@ import com.syscom.dao.UserRepository;
 import com.syscom.domains.dto.TokenDTO;
 import com.syscom.domains.models.Token;
 import com.syscom.domains.models.User;
+import com.syscom.service.MessageService;
 import com.syscom.service.TokenService;
 import com.syscom.service.exceptions.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -35,7 +36,7 @@ public class TokenServiceImpl implements TokenService{
     private UserRepository userRepository;
 
     @Autowired
-    private MessageSource messageSource;
+    private MessageService messageService;
 
     @Value("${token.duration}")
     private int tokenDuration;
@@ -49,7 +50,7 @@ public class TokenServiceImpl implements TokenService{
         tokenRepository.deleteExpiredToken(currentTime);
         User user = userRepository.findById(tokenDTO.getUserId());
         if(user==null){
-            throw new BusinessException(messageSource.getMessage("user.token.mandatory", null, null));
+            throw new BusinessException(messageService.getMessage("user.token.mandatory"));
         }
         LocalDateTime expirationDate = currentTime.plusMinutes(tokenDuration);
         String value = UUID.randomUUID().toString();

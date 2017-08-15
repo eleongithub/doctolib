@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * Created by Eric Legba on 30/07/17.
  */
-
 @Api(value = UserController.PATH)
 @RestController
 @RequestMapping(LoginController.PATH)
@@ -41,7 +40,7 @@ public class LoginController implements BaseController {
     @ApiResponses(value = { @ApiResponse(code = 400, message = "Bad Request param error")
     })
     public String login() throws BusinessException {
-        //Récupérer le login de l'utilisateur à partir du context Spring Security
+//        Récupérer le login de l'utilisateur à partir du context Spring Security
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return userService.authenticate(user.getUsername());
     }

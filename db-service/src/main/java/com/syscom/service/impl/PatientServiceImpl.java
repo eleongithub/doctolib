@@ -3,14 +3,15 @@ package com.syscom.service.impl;
 import com.syscom.dao.PatientRepository;
 import com.syscom.domains.dto.PatientDTO;
 import com.syscom.domains.models.Patient;
+import com.syscom.service.MessageService;
 import com.syscom.service.PatientService;
 import com.syscom.service.exceptions.BusinessException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,7 +29,7 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 public class PatientServiceImpl implements PatientService {
 
     @Autowired
-    private MessageSource messageSource;
+    private MessageService messageService;
 
     @Autowired
     private PatientRepository patientRepository;
@@ -38,7 +39,7 @@ public class PatientServiceImpl implements PatientService {
      */
     @Override
     public void create(PatientDTO patientDTO) throws BusinessException {
-        Assert.notNull(patientDTO, messageSource.getMessage("patient.not.null", null, null));
+        Assert.notNull(patientDTO, messageService.getMessage("patient.not.null"));
         List<String> errors = checkPatientData(patientDTO);
 
 //		1 - Verifier les données obligatoires
@@ -63,10 +64,10 @@ public class PatientServiceImpl implements PatientService {
      */
     @Override
     public PatientDTO findById(Long id) throws BusinessException {
-        Assert.notNull(id, messageSource.getMessage("patient.id.not.null", null, null));
+        Assert.notNull(id, messageService.getMessage("patient.id.not.null"));
         Patient patient = patientRepository.findOne(id);
         if(patient==null){
-            throw new BusinessException(messageSource.getMessage("patient.unknown", null, null));
+            throw new BusinessException(messageService.getMessage("patient.unknown"));
         }
         return convertToDTO(patient);
     }
@@ -87,12 +88,12 @@ public class PatientServiceImpl implements PatientService {
      */
     @Override
     public PatientDTO update(Long id, PatientDTO patientDTO) throws BusinessException {
-        Assert.notNull(id, messageSource.getMessage("patient.id.not.null", null, null));
-        Assert.notNull(patientDTO, messageSource.getMessage("patient.not.null", null, null));
+        Assert.notNull(id, messageService.getMessage("patient.id.not.null"));
+        Assert.notNull(patientDTO, messageService.getMessage("patient.not.null"));
         Patient patient = patientRepository.findOne(id);
 
         if(patient==null || patient.getId() != patientDTO.getId()){
-            throw new BusinessException(messageSource.getMessage("patient.unknown", null, null));
+            throw new BusinessException(messageService.getMessage("patient.unknown"));
         }
         patient.setAddress(patientDTO.getAddress());
         patient.setMail(patientDTO.getMail());
@@ -106,10 +107,10 @@ public class PatientServiceImpl implements PatientService {
      */
     @Override
     public void delete(Long id) throws BusinessException {
-        Assert.notNull(id, messageSource.getMessage("patient.id.not.null", null, null));
+        Assert.notNull(id, messageService.getMessage("patient.id.not.null"));
         Patient patient = patientRepository.findOne(id);
         if(patient==null){
-            throw new BusinessException(messageSource.getMessage("patient.unknown", null, null));
+            throw new BusinessException(messageService.getMessage("patient.unknown"));
         }
         patientRepository.delete(patient);
     }
@@ -124,13 +125,13 @@ public class PatientServiceImpl implements PatientService {
     private List<String> checkPatientData(PatientDTO patientDTO){
         List<String> errors = new ArrayList<>();
         if(isEmpty(patientDTO.getName())){
-            errors.add(messageSource.getMessage("patient.name.empty", null, null));
+            errors.add(messageService.getMessage("patient.name.empty"));
         }
         if(isEmpty(patientDTO.getFirstName())){
-            errors.add(messageSource.getMessage("patient.firstname.empty", null, null));
+            errors.add(messageService.getMessage("patient.firstname.empty"));
         }
         if(isEmpty(patientDTO.getPhone())){
-            errors.add(messageSource.getMessage("patient.phone.empty", null, null));
+            errors.add(messageService.getMessage("patient.phone.empty"));
         }
         return errors;
     }

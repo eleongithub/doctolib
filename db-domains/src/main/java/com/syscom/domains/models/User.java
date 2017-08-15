@@ -51,6 +51,9 @@ public class User extends BaseBean {
 	@Column(name = "U_LOGIN")
 	private String login;
 
+	@Column(name = "U_MAIL")
+	private String mail;
+
 	@Column(name = "U_PASSWORD")
 	private String password;
 

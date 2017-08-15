@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
  */
 public class LoginControllerTest extends ControllerApiTest{
 
-    private static final String RESOURCE = "/api/login";
+    public static final String RESOURCE = "/api/login";
 
     @Autowired
     private LoginController loginController;

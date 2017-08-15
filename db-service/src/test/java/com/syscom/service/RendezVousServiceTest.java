@@ -7,6 +7,9 @@ import com.syscom.service.exceptions.BusinessException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Test des services métiers des rendez-vous.
@@ -20,6 +23,8 @@ public class RendezVousServiceTest extends ServiceTest {
     private static final String PHONE = "PHONE";
     private static final String ADDRESS = "ADDRESS";
     private static final String MAIL = "MAIL";
+    private static final LocalDateTime BEGIN = LocalDateTime.now();
+    private static final LocalDateTime END = BEGIN.plusMinutes(10);
 
     @Autowired
     private RendezVousService rendezVousService;
@@ -39,10 +44,9 @@ public class RendezVousServiceTest extends ServiceTest {
 
     @Test(expected = BusinessException.class)
     public void createRendezVousWithoutAllMandatoriesDatasThrowException() throws Exception {
-        LocalDateTime begin = LocalDateTime.now();
         Patient patient = createPatient();
         RendezVousDTO rendezVousDTO = RendezVousDTO.builder()
-                                                   .dateBegin(begin)
+                                                   .dateBegin(BEGIN)
                                                    .patientId(patient.getId())
                                                    .build();
         rendezVousService.create(rendezVousDTO);
@@ -50,11 +54,9 @@ public class RendezVousServiceTest extends ServiceTest {
 
     @Test(expected = BusinessException.class)
     public void createRendezVousWithBadDateThrowException() throws Exception {
-        LocalDateTime begin = LocalDateTime.now();
-        LocalDateTime end = begin.minusMinutes(10);
         RendezVousDTO rendezVousDTO = RendezVousDTO.builder()
-                                                   .dateBegin(begin)
-                                                   .dateEnd(end)
+                                                   .dateBegin(END)
+                                                   .dateEnd(BEGIN)
                                                    .patientId(createPatient().getId())
                                                    .build();
         rendezVousService.create(rendezVousDTO);
@@ -62,33 +64,43 @@ public class RendezVousServiceTest extends ServiceTest {
 
     @Test
     public void createRendezVous() throws Exception {
-        LocalDateTime begin = LocalDateTime.now();
-        LocalDateTime end = begin.plusMinutes(10);
-        RendezVousDTO rendezVousDTO = RendezVousDTO.builder()
-                                                   .dateBegin(begin)
-                                                   .dateEnd(end)
-                                                   .patientId(createPatient().getId())
-                                                   .build();
-        rendezVousService.create(rendezVousDTO);
+        Patient patient = createPatient();
+        rendezVousService.create(createRendezVousDTO(patient));
     }
 
 
     @Test
     public void findAll() throws Exception {
-        LocalDateTime begin = LocalDateTime.now();
-        LocalDateTime end = begin.plusMinutes(10);
         Patient patient = createPatient();
-        RendezVousDTO rendezVousDTO = RendezVousDTO.builder()
-                                                   .dateBegin(begin)
-                                                   .dateEnd(end)
-                                                   .patientId(patient.getId())
-                                                   .build();
+        RendezVousDTO rendezVousDTO = createRendezVousDTO(patient);
         rendezVousService.create(rendezVousDTO);
+        List<RendezVousDTO> lists = rendezVousService.findAll();
+        assertThat(lists).isNotEmpty();
+        assertThat(lists.size()).isEqualTo(1);
+        RendezVousDTO result = lists.get(0);
+        assertThat(result.getDateBegin()).isEqualTo(BEGIN);
+        assertThat(result.getDateEnd()).isEqualTo(END);
+        assertThat(result.getPatientId()).isEqualTo(patient.getId());
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void findRendezVousWithWrongId() throws Exception {
+    public void findRendezVousWithNullId() throws Exception {
         RendezVousDTO rendezVousDTO = rendezVousService.findById(null);
+    }
+
+    @Test(expected = BusinessException.class)
+    public void findRendezVousWithWrongId() throws Exception {
+        RendezVousDTO rendezVousDTO = rendezVousService.findById(Long.valueOf(100));
+        assertThat(rendezVousDTO).isNull();
+    }
+
+
+    private RendezVousDTO createRendezVousDTO(Patient patient){
+        return RendezVousDTO.builder()
+                            .dateBegin(BEGIN)
+                            .dateEnd(END)
+                            .patientId(patient.getId())
+                            .build();
     }
 
     private Patient createPatient(){

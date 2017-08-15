@@ -7,7 +7,6 @@ import org.springframework.data.repository.CrudRepository;
  * Repository pour effectuer les CRUD des patients {@link Patient}
  *
  * @author Eric Legba
- *
  */
 public interface PatientRepository extends CrudRepository<Patient, Long> {
 }

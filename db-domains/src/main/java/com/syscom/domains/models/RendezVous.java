@@ -34,7 +34,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {})
 @Entity
-@Table(name = "T_USER")
+@Table(name = "T_RENDEZ_VOUS")
 public class RendezVous extends BaseBean {
 
 

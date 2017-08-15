@@ -1,15 +1,13 @@
 package com.syscom.rest.api;
 
 import com.syscom.domains.dto.PatientDTO;
-import com.syscom.domains.dto.UserDTO;
-import com.syscom.domains.enums.Role;
-import com.syscom.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 /**
  *
@@ -24,42 +22,58 @@ public class PatientControllerTest extends ControllerApiTest{
     private static final String PHONE = "PHONE";
     private static final String MAIL = "MAIL";
 
-    @Autowired
-    private PatientController patientcontroller;
 
     @Autowired
-    private UserService userService;
+    private PatientController patientController;
 
-    private String token;
 
     @Before
     public void setup() throws Exception {
-        super.initMockMvc(patientcontroller);
-        createAdminRole();
-        UserDTO userDTO= UserDTO.builder()
-                .name(USER_NAME)
-                .firstName(USER_FIRST_NAME)
-                .password(USER_PASSWORD)
-                .login(USER_LOGIN)
-                .role(Role.ADMIN.name())
-                .build();
-        userService.create(userDTO);
-        this.token = userService.authenticate(USER_LOGIN);
+        super.initMockMvc(patientController);
     }
 
     @Test
-    public void whenCreateValidPatientThenReturnSuccess() throws Exception {
-        PatientDTO patientDTO = PatientDTO.builder()
-                                          .address(ADDRESS)
-                                          .mail(MAIL)
-                                          .firstName(FIRST_NAME)
-                                          .name(NAME)
-                                          .phone(PHONE)
-                                          .build();
+    public void whenCreatePatientWithoutAutorizationTokenThenReturnUnauthorized() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(RESOURCE)
-                                            .header(HttpHeaders.AUTHORIZATION,this.token)
-                                            .content(json(patientDTO))
+                                            .content(json(createPatientDTO()))
+                                            .contentType(contentType))
+                                            .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+    }
+
+    @Test
+    public void whenCreatePatientWithInvalidAutorizationTokenThenReturnUnauthorized() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post(RESOURCE)
+                .header(AUTHORIZATION, "token")
+                .content(json(createPatientDTO()))
+                .contentType(contentType))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+    }
+
+    @Test
+    public void whenCreateUnvalidPatientThenBadClientRequest() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post(RESOURCE)
+                .header(AUTHORIZATION, getTokenForAdmin())
+                .content(json(new PatientDTO()))
+                .contentType(contentType))
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
+    }
+
+    @Test
+    public void whenCreateValidPatientWithValidTokenThenReturnSuccess() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post(RESOURCE)
+                                            .header(AUTHORIZATION, getTokenForAdmin())
+                                            .content(json(createPatientDTO()))
                                             .contentType(contentType))
                                             .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
+    }
+
+    private PatientDTO createPatientDTO(){
+        return PatientDTO.builder()
+                         .address(ADDRESS)
+                         .mail(MAIL)
+                         .firstName(FIRST_NAME)
+                         .name(NAME)
+                         .phone(PHONE)
+                         .build();
     }
 }

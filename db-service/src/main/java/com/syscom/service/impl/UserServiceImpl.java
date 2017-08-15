@@ -3,17 +3,20 @@ package com.syscom.service.impl;
 import com.syscom.dao.RoleRepository;
 import com.syscom.dao.TokenRepository;
 import com.syscom.dao.UserRepository;
+import com.syscom.domains.dto.MailDTO;
 import com.syscom.domains.dto.TokenDTO;
 import com.syscom.domains.dto.UserDTO;
 import com.syscom.domains.models.Token;
 import com.syscom.domains.models.User;
 import com.syscom.domains.models.referentiels.Role;
+import com.syscom.service.MailService;
+import com.syscom.service.MessageService;
 import com.syscom.service.TokenService;
 import com.syscom.service.UserService;
 import com.syscom.service.exceptions.BusinessException;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,7 +25,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 /**
@@ -48,10 +54,13 @@ public class UserServiceImpl implements UserService {
 	private TokenService tokenService;
 
 	@Autowired
-	private MessageSource messageSource;
+	private MessageService messageService;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private MailService mailService;
 
 	/**
 	 * {@inheritDoc}
@@ -59,7 +68,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void create(UserDTO userDTO) throws BusinessException {
 
-		Assert.notNull(userDTO, messageSource.getMessage("user.not.null", null, null));
+		Assert.notNull(userDTO, messageService.getMessage("user.not.null"));
 
 //		1 - Verifier les données obligatoires
 		List<String> errors = checkUserData(userDTO);
@@ -69,13 +78,13 @@ public class UserServiceImpl implements UserService {
 
 //		Vérifier que le login n'est pas déjà utilisé
 		if(userRepository.existsByLogin(userDTO.getLogin())){
-			throw new BusinessException(messageSource.getMessage("user.login.already.used", null, null));
+			throw new BusinessException(messageService.getMessage("user.login.already.used"));
 		}
 
 //		Vérifier que le rôle renseigné existe
 		Role role = roleRepository.findByCode(userDTO.getRole());
 		if(role==null){
-			throw new BusinessException(messageSource.getMessage("user.role.unknown", null, null));
+			throw new BusinessException(messageService.getMessage("user.role.unknown"));
 		}
 
 //		Construire l'Objet User à persister à partir du DTO
@@ -84,28 +93,41 @@ public class UserServiceImpl implements UserService {
 						.firstName(userDTO.getFirstName())
 						.name(userDTO.getName())
 						.password(passwordEncoder.encode(userDTO.getPassword()))
+						.mail(userDTO.getMail())
 					    .role(role)
 						.build();
 
 //		Inserer l'utilisateur en BDD
 		 userRepository.save(user);
 
-//		TODO - Envoyer un mail à l'utilisateur pour lui notifier la création de son compte utilisateur
+//		Envoyer un mail de notification à l'utilisateur.
+		Map<String,Object> datas = new HashMap<>();
+		datas.put("name",user.getName());
+		datas.put("firstname",user.getFirstName());
+		datas.put("login",user.getLogin());
+		String subject = messageService.getMessage("user.create.account.mail.subject");
+		MailDTO mailDTO = MailDTO.builder()
+								 .to(user.getMail())
+								 .subject(subject)
+								 .datas(datas)
+								 .template("user-create-account")
+								 .build();
+		mailService.sendMessage(mailDTO);
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public String authenticate(String login) throws UsernameNotFoundException, BusinessException {
 
-		Assert.notNull(login,messageSource.getMessage("user.authentication.authorization.not.null", null, null));
+		Assert.notNull(login,messageService.getMessage("user.authentication.authorization.not.null"));
 
 		User user = userRepository.findByLogin(login);
 		if(user==null){
-			throw new BadCredentialsException(messageSource.getMessage("user.authentication.unkonwn.user", null, null));
+			throw new BadCredentialsException(messageService.getMessage("user.authentication.unkonwn.user"));
 		}
 
 		List<Token> tokens = tokenRepository.findByUser_Id(user.getId());
-		if(tokens.isEmpty()){
+		if(CollectionUtils.isEmpty(tokens)){
 //			Créer un nouveau jeton
 			TokenDTO tokenDTO = createToken(user.getId());
 			return tokenDTO.getValue();
@@ -148,23 +170,23 @@ public class UserServiceImpl implements UserService {
 	private List<String> checkUserData(UserDTO userDTO){
 		List<String> errors = new ArrayList<>();
 		if(isEmpty(userDTO.getName())){
-			errors.add(messageSource.getMessage("user.name.empty", null, null));
+			errors.add(messageService.getMessage("user.name.empty"));
 		}
 
 		if(isEmpty(userDTO.getFirstName())){
-			errors.add(messageSource.getMessage("user.firstname.empty", null, null));
+			errors.add(messageService.getMessage("user.firstname.empty"));
 		}
 
 		if(isEmpty(userDTO.getLogin())){
-			errors.add(messageSource.getMessage("user.login.empty", null, null));
+			errors.add(messageService.getMessage("user.login.empty"));
 		}
 
 		if(isEmpty(userDTO.getPassword())){
-			errors.add(messageSource.getMessage("user.password.empty", null, null));
+			errors.add(messageService.getMessage("user.password.empty"));
 		}
 
 		if(isEmpty(userDTO.getRole())){
-			errors.add(messageSource.getMessage("user.role.empty", null, null));
+			errors.add(messageService.getMessage("user.role.empty"));
 		}
 		return errors;
 	}

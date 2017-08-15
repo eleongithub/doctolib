@@ -124,6 +124,25 @@
                 <version>${springfox-swagger2.version}</version>
             </dependency>
 
+            <!-- Spring boot mail. Gestion des envois de mail -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-mail</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-thymeleaf</artifactId>
+                <version>${spring-boot.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>javassist</artifactId>
+                        <groupId>org.javassist</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
             <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-jwt -->
             <dependency>
                 <groupId>org.springframework.security</groupId>

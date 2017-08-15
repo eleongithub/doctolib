@@ -6,6 +6,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.spring4.SpringTemplateEngine;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+import org.thymeleaf.templateresolver.ITemplateResolver;
+import org.thymeleaf.templateresolver.TemplateResolver;
 
 /**
  * Configuration Spring pour la couche métier de l'application
@@ -37,5 +42,24 @@ public class DbServiceConfig {
 	@Bean
 	public PasswordEncoder passwordEncoder(){
 		return  new BCryptPasswordEncoder();
+	}
+
+
+	@Bean
+	public TemplateEngine templateEngine() {
+		final SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+		templateEngine.addTemplateResolver(this.htmlTemplateResolver());
+		return templateEngine;
+	}
+
+	private static ITemplateResolver htmlTemplateResolver() {
+		final ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+		templateResolver.setOrder(Integer.valueOf(0));
+		templateResolver.setPrefix("classpath:/templates/");
+		templateResolver.setSuffix(".html");
+		templateResolver.setTemplateMode(TemplateResolver.DEFAULT_TEMPLATE_MODE);
+		templateResolver.setCharacterEncoding("UTF-8");
+		templateResolver.setCacheable(false);
+		return templateResolver;
 	}
 }

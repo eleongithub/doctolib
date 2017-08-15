@@ -1,0 +1,24 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:remove="all">Création de votre compte utilisateur - Application Doctolib.</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<p>
+    Bonjour <h5 th:text="${name}"></h5> <h5 th:text="${firstname}"></h5>,
+</p>
+
+<p>
+    Nous vous informons que votre compte client a &eacute;t&eacute; cr&eacute;&eacute; avec succ&egrave;s.
+</p>
+
+<p>
+    Votre login est : <h5 th:text="${login}"></h5>.
+</p>
+
+<p>
+    Cordialement,
+    Doctolib.
+</p>
+</body>
+</html>
