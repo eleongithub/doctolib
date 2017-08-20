@@ -68,8 +68,8 @@ public class SpringBootSSLConfiguration {
         Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
         Http11NioProtocol protocol = (Http11NioProtocol) connector.getProtocolHandler();
         try {
-            File keystore = new ClassPathResource("keystore.jks").getFile();
-            File truststore = new ClassPathResource("keystore.jks").getFile();
+            File keystore = new ClassPathResource("/keystore/keystore.jks").getFile();
+            File truststore = new ClassPathResource("/keystore/keystore.jks").getFile();
             connector.setScheme("https");
             connector.setSecure(true);
             connector.setPort(8443);
