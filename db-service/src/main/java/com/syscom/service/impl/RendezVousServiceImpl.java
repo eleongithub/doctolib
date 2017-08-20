@@ -37,6 +37,8 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 public class RendezVousServiceImpl implements RendezVousService{
 
     private static final String RDV_ID_NOT_NULL = "rdv.id.not.null";
+    private static final String FIRST_NAME = "firstname";
+    private static final String UNKNOWN_RDV_ID = "rdv.unknown";
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
     @Autowired
@@ -83,7 +85,7 @@ public class RendezVousServiceImpl implements RendezVousService{
         if(patient!=null && !isEmpty(patient.getMail())){
             Map<String,Object> datas = new HashMap<>();
             datas.put("name",patient.getName());
-            datas.put("firstname",patient.getFirstName());
+            datas.put(FIRST_NAME,patient.getFirstName());
             String formatDateTime = rendezVousDTO.getDateBegin().format(FORMATTER);
             datas.put("dateRdv",formatDateTime);
             String subject = messageService.getMessage("patient.rdv.mail.subject");
@@ -116,7 +118,7 @@ public class RendezVousServiceImpl implements RendezVousService{
         Assert.notNull(id, messageService.getMessage(RDV_ID_NOT_NULL));
         RendezVous rendezVous = rendezVousRepository.findOne(id);
         if(rendezVous==null){
-            throw new BusinessException(messageService.getMessage("rdv.unknown"));
+            throw new BusinessException(messageService.getMessage(UNKNOWN_RDV_ID));
         }
         return convertToDTO(rendezVous);
     }
@@ -132,7 +134,7 @@ public class RendezVousServiceImpl implements RendezVousService{
 
 //      2 - Vérifier que le rendez-vous existe déjà en BDD
         RendezVous rendezVous = rendezVousRepository.findOne(id);
-        Assert.notNull(rendezVous, messageService.getMessage("rdv.unknown"));
+        Assert.notNull(rendezVous, messageService.getMessage(UNKNOWN_RDV_ID));
 
         Patient patient = null;
         if(rendezVousDTO.getPatientId()!=null){
@@ -154,7 +156,7 @@ public class RendezVousServiceImpl implements RendezVousService{
         if(patient!=null && !isEmpty(patient.getMail())) {
             Map<String, Object> datas = new HashMap<>();
             datas.put("name", patient.getName());
-            datas.put("firstname", patient.getFirstName());
+            datas.put(FIRST_NAME, patient.getFirstName());
             String oldDateTime = odlDate.format(FORMATTER);
             String newDateTime = rendezVousDTO.getDateBegin().format(FORMATTER);
             datas.put("oldDateRdv", oldDateTime);
@@ -181,7 +183,7 @@ public class RendezVousServiceImpl implements RendezVousService{
 
 //      2 - Vérifier que le rendez-vous existe
         RendezVous rendezVous = rendezVousRepository.findOne(id);
-        Assert.notNull(rendezVous, messageService.getMessage("rdv.unknown"));
+        Assert.notNull(rendezVous, messageService.getMessage(UNKNOWN_RDV_ID));
 
         Patient patient = rendezVous.getPatient();
         LocalDateTime dateRdv = rendezVous.getDateBegin();
@@ -192,7 +194,7 @@ public class RendezVousServiceImpl implements RendezVousService{
         if(patient!=null && !isEmpty(patient.getMail())) {
             Map<String, Object> datas = new HashMap<>();
             datas.put("name", patient.getName());
-            datas.put("firstname", patient.getFirstName());
+            datas.put(FIRST_NAME, patient.getFirstName());
             String dateTime = dateRdv.format(FORMATTER);
             datas.put("dateRdv", dateTime);
             String subject = messageService.getMessage("patient.rdv.cancel.mail.subject");
