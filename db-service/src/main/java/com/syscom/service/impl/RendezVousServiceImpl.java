@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +37,13 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 public class RendezVousServiceImpl implements RendezVousService{
 
     private static final String RDV_ID_NOT_NULL = "rdv.id.not.null";
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+
+    @Autowired
+    private RendezVousRepository rendezVousRepository;
+
+    @Autowired
+    private PatientRepository patientRepository;
 
     @Autowired
     private MessageService messageService;
@@ -43,11 +51,6 @@ public class RendezVousServiceImpl implements RendezVousService{
     @Autowired
     private MailService mailService;
 
-    @Autowired
-    private RendezVousRepository rendezVousRepository;
-
-    @Autowired
-    private PatientRepository patientRepository;
 
     /**
      * {@inheritDoc}
@@ -81,8 +84,7 @@ public class RendezVousServiceImpl implements RendezVousService{
             Map<String,Object> datas = new HashMap<>();
             datas.put("name",patient.getName());
             datas.put("firstname",patient.getFirstName());
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-            String formatDateTime = rendezVousDTO.getDateBegin().format(formatter);
+            String formatDateTime = rendezVousDTO.getDateBegin().format(FORMATTER);
             datas.put("dateRdv",formatDateTime);
             String subject = messageService.getMessage("patient.rdv.mail.subject");
             MailDTO mailDTO = MailDTO.builder()
@@ -142,14 +144,30 @@ public class RendezVousServiceImpl implements RendezVousService{
         if(!errors.isEmpty()){
             throw new BusinessException(StringUtils.join(errors," "));
         }
-
+        LocalDateTime odlDate = rendezVous.getDateBegin();
         rendezVous.setDateBegin(rendezVousDTO.getDateBegin());
         rendezVous.setDateEnd(rendezVousDTO.getDateEnd());
         rendezVous.setPatient(patient);
         rendezVousRepository.save(rendezVous);
 
 //      4 - Envoyer le mail de modification du rendez-vous au patient
-//      TODO - Envoyer le mail
+        if(patient!=null && !isEmpty(patient.getMail())) {
+            Map<String, Object> datas = new HashMap<>();
+            datas.put("name", patient.getName());
+            datas.put("firstname", patient.getFirstName());
+            String oldDateTime = odlDate.format(FORMATTER);
+            String newDateTime = rendezVousDTO.getDateBegin().format(FORMATTER);
+            datas.put("oldDateRdv", oldDateTime);
+            datas.put("newDateRdv", newDateTime);
+            String subject = messageService.getMessage("patient.rdv.update.mail.subject");
+            MailDTO mailDTO = MailDTO.builder()
+                    .to(patient.getMail())
+                    .subject(subject)
+                    .datas(datas)
+                    .template("update-rdv")
+                    .build();
+            mailService.sendMessage(mailDTO);
+        }
         return convertToDTO(rendezVous);
     }
 
@@ -163,13 +181,29 @@ public class RendezVousServiceImpl implements RendezVousService{
 
 //      2 - Vérifier que le rendez-vous existe
         RendezVous rendezVous = rendezVousRepository.findOne(id);
-        Assert.notNull(rendezVous, messageService.getMessage("rdv.unknownl"));
+        Assert.notNull(rendezVous, messageService.getMessage("rdv.unknown"));
 
+        Patient patient = rendezVous.getPatient();
+        LocalDateTime dateRdv = rendezVous.getDateBegin();
 //      3 - Supprimer le rendez-vous
         rendezVousRepository.delete(id);
 
 //      4 - Envoyer un mail d'annulation du rendez-vous
-//      TODO - Envoyer le mail
+        if(patient!=null && !isEmpty(patient.getMail())) {
+            Map<String, Object> datas = new HashMap<>();
+            datas.put("name", patient.getName());
+            datas.put("firstname", patient.getFirstName());
+            String dateTime = dateRdv.format(FORMATTER);
+            datas.put("dateRdv", dateTime);
+            String subject = messageService.getMessage("patient.rdv.cancel.mail.subject");
+            MailDTO mailDTO = MailDTO.builder()
+                    .to(patient.getMail())
+                    .subject(subject)
+                    .datas(datas)
+                    .template("delete-rdv")
+                    .build();
+            mailService.sendMessage(mailDTO);
+        }
     }
 
     /**
@@ -208,6 +242,7 @@ public class RendezVousServiceImpl implements RendezVousService{
      */
     private RendezVousDTO convertToDTO(RendezVous rendezVous){
         return RendezVousDTO.builder()
+                            .id(rendezVous.getId())
                             .dateBegin(rendezVous.getDateBegin())
                             .dateEnd(rendezVous.getDateEnd())
                             .patientId(rendezVous.getPatient().getId())

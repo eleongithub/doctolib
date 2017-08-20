@@ -1,11 +1,12 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:remove="all">Création de votre compte utilisateur - Application Doctolib.</title>
+    <title th:remove="all">réation de votre compte utilisateur - Doctolib.</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
 <p>
-    Bonjour <h5 th:text="${name}"></h5> <h5 th:text="${firstname}"></h5>,
+    Bonjour <span th:text=" ${name} +  '  ' +${firstname} "/>,
 </p>
 
 <p>
@@ -13,12 +14,16 @@
 </p>
 
 <p>
-    Votre login est : <h5 th:text="${login}"></h5>.
+    Votre login est : <span th:text=" ${login}"/>.
 </p>
 
 <p>
-    Cordialement,
-    Doctolib.
+    Nous vous remercions pour votre confiance.
+</p>
+
+<p>
+    Cordialement, <br />
+    <em>Doctolib</em>
 </p>
 </body>
 </html>

@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -23,6 +22,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(exclude = {})
 public class RendezVousDTO implements Serializable {
 
+    private Long id;
 
     private LocalDateTime dateBegin;
 

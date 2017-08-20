@@ -2,8 +2,10 @@ package com.syscom.service.impl;
 
 import com.syscom.domains.dto.MailDTO;
 import com.syscom.service.MailService;
-import com.syscom.service.exceptions.BusinessException;
+import com.syscom.service.MessageService;
 import com.syscom.service.exceptions.TechnicalException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -28,12 +30,16 @@ import java.io.File;
 @Transactional(rollbackFor = Exception.class)
 public class MailServiceImpl implements MailService {
 
+    private static Logger LOGGER = LoggerFactory.getLogger(MailServiceImpl.class);
+
     @Autowired
     private JavaMailSender javaMailSender;
 
     @Autowired
     private TemplateEngine templateEngine;
 
+    @Autowired
+    private MessageService messageService;
 
     @Value("${push.mail.block.msg}")
     private String blockMsg;
@@ -45,9 +51,10 @@ public class MailServiceImpl implements MailService {
     private boolean pushMail;
 
     @Override
-    public void sendMessage(MailDTO mailDTO) throws BusinessException {
-        if(pushMail) {
-            throw new BusinessException(blockMsg);
+    public void sendMessage(MailDTO mailDTO) {
+        if(!pushMail) {
+            LOGGER.warn(messageService.getMessage("warn.push.mail.disabled"));
+            return;
         }
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -70,6 +77,5 @@ public class MailServiceImpl implements MailService {
         } catch (javax.mail.MessagingException exception) {
             throw new TechnicalException(exception);
         }
-
     }
 }

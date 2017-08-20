@@ -37,8 +37,7 @@ public class LoginController implements BaseController {
      */
     @RequestMapping(method = RequestMethod.POST)
     @ApiOperation(value = "API pour l'authentification des utilisateurs", notes = "Authentification d'un utilisateur")
-    @ApiResponses(value = { @ApiResponse(code = 400, message = "Bad Request param error")
-    })
+    @ApiResponses(value = { @ApiResponse(code = 400, message = "Bad Request param error")})
     public String login() throws BusinessException {
 //        Récupérer le login de l'utilisateur à partir du context Spring Security
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

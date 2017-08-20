@@ -57,6 +57,7 @@
         <springfox-swagger-ui.version>2.6.1</springfox-swagger-ui.version>
         <jjwt.version>0.7.0</jjwt.version>
         <spring-security-jwt.version>1.0.4.RELEASE</spring-security-jwt.version>
+        <jackson-datatype>2.8.6</jackson-datatype>
     </properties>
 
     <dependencyManagement>
@@ -95,6 +96,20 @@
                 <artifactId>spring-boot-starter-security</artifactId>
                 <version>${spring-boot.version}</version>
             </dependency>
+
+            <!-- Configuration des dates -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jsr310</artifactId>
+                <version>${jackson-datatype}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jdk8</artifactId>
+                <version>${jackson-datatype}</version>
+            </dependency>
+
 
             <!-- Jar PostgreSQl pour la connexion à la base de données -->
             <dependency>
