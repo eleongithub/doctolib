@@ -118,7 +118,7 @@
             <dependency>
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger-ui</artifactId>
-                <version>${springfox-swagger2-ui.version}</version>
+                <version>${springfox-swagger-ui.version}</version>
             </dependency>
 
             <!-- Configuration de la documentation de l'API avec Swagger -->
