@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 /**
- * Classe converter pour convertir les dates de type java {@LocalDateTime} vers le type SQL {@Timestamp} et vice-versa.
+ * Classe converter pour convertir les dates de type java vers le type SQL  et vice-versa.
  *
  * Created by Eric Legba on 30/07/17.
  */
