@@ -50,7 +50,6 @@
         <postgresql.version>9.4-1201-jdbc41</postgresql.version>
         <flyway.version>4.2.0</flyway.version>
         <jacoco.version>0.7.7.201606060606</jacoco.version>
-        <springfox-swagger2.version>2.6.1</springfox-swagger2.version>
         <springfox-swagger-ui.version>2.6.1</springfox-swagger-ui.version>
         <jjwt.version>0.7.0</jjwt.version>
         <spring-security-jwt.version>1.0.4.RELEASE</spring-security-jwt.version>
