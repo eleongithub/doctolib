@@ -43,7 +43,7 @@ public class RendezVousController implements BaseController {
      * @param patientId identifiant du patient
      * @param dateBegin date de debut de rendez-vous
      * @param dateEnd date de fin de rendez-vous
-     * @throws Exception fonctionnelle {@link BusinessException}
+     * @throws BusinessException Exception fonctionnelle {@link BusinessException}
      */
     @RequestMapping(method = RequestMethod.POST)
     @Secured(Fonctionnalites.ROLE_CREER_RENDEZ_VOUS)

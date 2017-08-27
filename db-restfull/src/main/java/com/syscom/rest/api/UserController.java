@@ -34,7 +34,7 @@ public class UserController implements BaseController {
      * API pour créer un nouvel utilisateur
      *
      * @param userDTO {@link UserDTO}
-     * @throws Exception fonctionnelle {@link BusinessException}
+     * @throws BusinessException Exception fonctionnelle {@link BusinessException}
      */
     @RequestMapping(method = RequestMethod.POST)
     @ApiOperation(value = "Créer un nouvel utilisateur", notes = "Créer un nouvel utilisateur")

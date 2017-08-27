@@ -101,7 +101,7 @@ public class PatientController implements BaseController {
      * API pour Supprimer un patient
      *
      * @param id Id du patient
-     * @throws Exception fonctionnelle {@link BusinessException}
+     * @throws BusinessException Exception fonctionnelle {@link BusinessException}
      */
     @RequestMapping(value="/{id}", method = RequestMethod.DELETE)
     @Secured(Fonctionnalites.ROLE_SUPPRIMER_PATIENT)

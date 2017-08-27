@@ -28,7 +28,6 @@ public class LoginController implements BaseController {
     @Autowired
     private UserService userService;
 
-
     /**
      * API pour authentifier un utilisateur et retourner un jeton de sécurité
      *
