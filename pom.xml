@@ -118,14 +118,14 @@
             <dependency>
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger-ui</artifactId>
-                <version>${springfox-swagger-ui.version}</version>
+                <version>${springfox-swagger2-ui.version}</version>
             </dependency>
 
             <!-- Configuration de la documentation de l'API avec Swagger -->
             <dependency>
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger2</artifactId>
-                <version>${springfox-swagger2.version}</version>
+                <version>${springfox-swagger-ui.version}</version>
             </dependency>
 
             <!-- Spring boot mail. Gestion des envois de mail -->
