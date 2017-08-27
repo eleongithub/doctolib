@@ -5,7 +5,7 @@
     <groupId>com.syscom</groupId>
     <artifactId>doctolib</artifactId>
     <packaging>pom</packaging>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <modules>
         <module>db-scripts</module>
         <module>db-domains</module>
@@ -21,7 +21,6 @@
         <connection>scm:git:git@github.com:eleongithub/doctolib.git</connection>
         <url>scm:git:git@github.com:eleongithub/doctolib.git</url>
         <developerConnection>scm:git:git@github.com:eleongithub/doctolib.git</developerConnection>
-      <tag>HEAD</tag>
   </scm>
 
     <!--Paramètre du repository Nexus -->
@@ -30,13 +29,11 @@
             <id>nexus-releases</id>
             <name>Repository Nexus release</name>
             <url>http://192.168.1.97:9081/nexus/content/repositories/releases/</url>
-            <!--TODO : Repo par projet <url>http://ipAdress:port/nexus/content/repositories/DB-RELEASES/</url>-->
         </repository>
         <snapshotRepository>
             <id>nexus-snapshots</id>
             <name>Repository Nexus snapshot</name>
             <url>http://192.168.1.97:9081/nexus/content/repositories/snapshots/</url>
-            <!-- TODO : Repo par projet <url>http://ipAdress:port/nexus/content/repositories/DB-SNAPSHOTS/</url>-->
         </snapshotRepository>
     </distributionManagement>
 
