@@ -20,7 +20,7 @@ import javax.persistence.Table;
 import java.util.List;
 
 /**
- * Classe réalisant le mapping Objet <=> Relationnel des rôles des utilisateurs
+ * Classe réalisant le mapping Objet - Relationnel des rôles des utilisateurs
  *
  * Created by Eric Legba on 27/07/17.
  */
