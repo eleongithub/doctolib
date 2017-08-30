@@ -21,7 +21,7 @@
         <connection>scm:git:git@github.com:eleongithub/doctolib.git</connection>
         <url>scm:git:git@github.com:eleongithub/doctolib.git</url>
         <developerConnection>scm:git:git@github.com:eleongithub/doctolib.git</developerConnection>
-  </scm>
+    </scm>
 
     <!--Paramètre du repository Nexus -->
     <distributionManagement>
