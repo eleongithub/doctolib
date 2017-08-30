@@ -1,5 +1,5 @@
-*** Doctolib ***
-*********************
+Doctolib
+==
 
 Doctolib est une application qui permet aux medecins de gérer leeurs rendez-vous avec les patients.
 En s'inspirant de cette application, nous allons écrire une API qui permet de gérer des apptients
@@ -7,7 +7,7 @@ et leurs rendez-vous. C'est un cas pratique dont nous allons nous servir comme c
 pour utiliser Spring Boot pour contruire une API qui peut être utiliser pour ce contexte.
 
 Spring Boot
-==
+-
 
 Spring Boot est un framework de Spring qui permet de simplifier le démarrage des applications Web
 avec une meilleure gestion des configurations (plus besoin des nombreux fichiers XML de configuration, etc...).
@@ -15,7 +15,7 @@ Il embarque aussi un serveur Tomcat et gère mieux les dépendances avec l'impor
 Dans ce cas pratique, nous utilisons Spring Boot pour produire une API Backend Spring Rest.
 
 Architecture de l'application
-==
+-
 
 L'application est décomposée en plusieurs couches que sont :
 * le façade Web : elle expose les APIs disponibles pour les clients.
@@ -25,8 +25,8 @@ L'application est décomposée en plusieurs couches que sont :
 * le versionning des scripts SQL.
 * la base de données (PostgreSQL) : Les données sont stockées dans un SGBD PostgreSQL.
 
-Le façade Web
--
+### Le façade Web #
+
 
 Le façade Web est la partie accessible aux clients de l'API. Elle expose uniquement les APIs REST et n'effectue aucun traitement métier.
 Elle utilise les beans service  de la couche inférieure et est codé dans le module db-restfull.Pour construire les API REST, nous utilisons le framework
@@ -44,8 +44,7 @@ Sil les credentials sont connus, un token de connection est fournis par l'API. C
 * [Spring Security](https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/ "link to Spring Security") : En utilisant l'annotation @Secured et d'autres mécanismes de sécurité, les APIs sécurisés
 ne sont accessibles qu'aux clients disposant de tokens valides et des droits les autorisant à exploiter lesdidtes APIs.
 
-La couche métier
--
+### La couche métier #
 
 La couche métier contient les contrats d'interface des services métiers et leurs implémentations. Elle est disponible dans le module db-service.
 Les implémentations des services métiers sont des beans de service Spring caractérisés par l'annotation
@@ -54,8 +53,7 @@ Aussi c'est dans cette couche que se gère les transactions(@Transactional), les
 Pour consulter/modifier des données de la la base de données, elle s'appuie sur les repositories de la couche DAO.
 
 
-La couche DAO (Data Access Object)
--
+### La couche DAO (Data Access Object) #
 
 La couche DAO de l'application est diponible dans le module db-dao.
 Elle est composée des interfaces Spring Data qui permet d'accéder aux données de l'applications.
@@ -65,8 +63,7 @@ Par exemple, Spring Data fournit d'éjà des méthodes telles que la recherche/s
 dans une table, la persistence d'une ligne, etc... Avec ces méthodes fournies, Spring Data nous permet de gagner du temps et de diminuer
 la taille des repositories d'accès aux données. En plus, Spring Data peut être combiner avec plusieurs SGBD relationnels ou de type NoSQL.
 
-La couche ORM(JPA/Hibernate)
--
+### La couche ORM(JPA/Hibernate) #
 
 Cette couche (module db-domains) réalise le mapping entre les objets Java et les tables de la base de données.
 JPA est Java Persistence API. Elle est une interface de la communauté Java qui définit des normes, des règles
@@ -80,8 +77,7 @@ du package javax.persistence. Nous n'utiliserons aucune annotation Hibernate. Pa
 telles que le nom de la colonne, le type, la longueur, etc...
 * etc...
 
-Le versionning des scripts SQL
--
+### Le versionning des scripts SQL #
 
 Le versionning des scripts SQL est assuré par le framework [flyway](https://flywaydb.org "link to flyway").
 Tous les scripts SQL sont dans le module db-scripts, dans le sous-répertoire des ressources.
