@@ -1,0 +1,25 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:remove="all">Modification de votre rendez-vous de consultation -  Doctolib.</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<p>
+    Bonjour <span th:text=" ${name} +  '  ' +${firstname} "/>,
+</p>
+
+<p>
+    Nous vous informons que votre rendez-vous de consultation initialement prévu pour le  <span th:text="${oldDateRdv}"/> a &eacute;t&eacute; report&eacute; au <span th:text="${newDateRdv}"/>.
+</p>
+
+<p>
+    Nous vous remercions pour votre confiance.
+</p>
+
+
+<p>
+    Cordialement, <br />
+    <em>Doctolib</em>
+</p>
+</body>
+</html>

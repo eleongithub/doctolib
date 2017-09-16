@@ -1,0 +1,32 @@
+-- Création de la tables des patients
+CREATE TABLE T_PATIENT(
+  P_ID BIGINT NOT NULL,
+  P_NAME VARCHAR(100) NOT NULL,
+  P_FIRST_NAME VARCHAR(100) NOT NULL,
+  P_PHONE VARCHAR(20) NOT NULL,
+  P_MAIL VARCHAR(200),
+  P_ADDRESS VARCHAR(255) NOT NULL,
+  CREATE_DATE TIMESTAMP default CURRENT_TIMESTAMP,
+  UPDATE_DATE TIMESTAMP default CURRENT_TIMESTAMP,
+  PRIMARY KEY(P_ID)
+);
+
+-- Commentaires sur la table des patients et des colonnes
+COMMENT ON TABLE T_PATIENT IS 'Table des patients';
+COMMENT ON COLUMN T_PATIENT.P_ID IS 'ID du patient';
+COMMENT ON COLUMN T_PATIENT.P_NAME IS 'Nom du patient';
+COMMENT ON COLUMN T_PATIENT.P_FIRST_NAME IS 'Prénom du patient';
+COMMENT ON COLUMN T_PATIENT.P_PHONE IS 'Numero de telephone du patient';
+COMMENT ON COLUMN T_PATIENT.P_MAIL IS 'Mail du patient';
+COMMENT ON COLUMN T_PATIENT.P_ADDRESS IS 'Adresse complète du patient';
+COMMENT ON COLUMN T_PATIENT.CREATE_DATE IS 'Date de création';
+COMMENT ON COLUMN T_PATIENT.UPDATE_DATE IS 'Date de dernière mise à jour';
+
+
+-- Création d'une sequence pour gérer les identifiants techniques des patients
+CREATE SEQUENCE PATIENT_SEQ
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:remove="all">réation de votre compte utilisateur - Doctolib.</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<p>
+    Bonjour <span th:text=" ${name} +  '  ' +${firstname} "/>,
+</p>
+
+<p>
+    Nous vous informons que votre compte client a &eacute;t&eacute; cr&eacute;&eacute; avec succ&egrave;s.
+</p>
+
+<p>
+    Votre login est : <span th:text=" ${login}"/>.
+</p>
+
+<p>
+    Nous vous remercions pour votre confiance.
+</p>
+
+<p>
+    Cordialement, <br />
+    <em>Doctolib</em>
+</p>
+</body>
+</html>
